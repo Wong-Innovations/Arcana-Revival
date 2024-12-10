@@ -1,0 +1,10 @@
+{
+  "poof": {
+    "category": "ambient",
+    "subtitle": "sounds.arcana.poof",
+    "sounds": [
+      "thaumcraft:poof1",
+      "thaumcraft:poof2"
+    ]
+  }
+}
