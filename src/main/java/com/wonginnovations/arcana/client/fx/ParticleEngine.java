@@ -57,30 +57,6 @@ public class ParticleEngine {
                 if (particles.containsKey(dim)) {
                     ArrayList<FXGeneric> parts = particles.get(dim);
                     if (!parts.isEmpty()) {
-//                        switch (layer) {
-//                            case 0:
-//                                RenderSystem.blendFunc(770, 1);
-//                                break;
-//                            case 1:
-//                                RenderSystem.blendFunc(770, 771);
-//                                break;
-//                            case 2:
-//                                RenderSystem.blendFunc(770, 1);
-//                                RenderSystem.disableDepthTest();
-//                                break;
-//                            case 3:
-//                                RenderSystem.blendFunc(770, 771);
-//                                RenderSystem.disableDepthTest();
-//                        }
-
-//                    float f1 = ActiveRenderInfo.getRotationX();
-//                    float f2 = ActiveRenderInfo.getRotationZ();
-//                    float f3 = ActiveRenderInfo.getRotationYZ();
-//                    float f4 = ActiveRenderInfo.getRotationXY();
-//                    float f5 = ActiveRenderInfo.getRotationXZ();
-//                    Particle.interpPosX = entity.lastTickPosX + (entity.getX() - entity.getOldPos()) * (double)frame;
-//                    Particle.interpPosY = entity.lastTickPosY + (entity.getY() - entity.lastTickPosY) * (double)frame;
-//                    Particle.interpPosZ = entity.lastTickPosZ + (entity.getZ() - entity.lastTickPosZ) * (double)frame;
                         Tesselator tesselator = Tesselator.getInstance();
                         BufferBuilder buffer = tesselator.getBuilder();
                         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_LIGHTMAP_COLOR);
