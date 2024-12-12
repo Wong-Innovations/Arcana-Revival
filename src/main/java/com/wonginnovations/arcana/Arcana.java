@@ -1,6 +1,10 @@
 package com.wonginnovations.arcana;
 
 import com.mojang.logging.LogUtils;
+import com.wonginnovations.arcana.client.ClientProxy;
+import com.wonginnovations.arcana.client.fx.ModParticles;
+import com.wonginnovations.arcana.common.CommonProxy;
+import com.wonginnovations.arcana.common.ModRecipes;
 import com.wonginnovations.arcana.common.ModSounds;
 import com.wonginnovations.arcana.common.item.ModCreativeModeTabs;
 import com.wonginnovations.arcana.common.item.ModItems;
@@ -13,6 +17,7 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -28,14 +33,22 @@ public class Arcana
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public Arcana(FMLJavaModLoadingContext context)
+    public static CommonProxy proxy;
+
+    public Arcana()
     {
-        IEventBus modEventBus = context.getModEventBus();
+        proxy = DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> CommonProxy::new);
+
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModCreativeModeTabs.register(modEventBus);
 
         ModItems.register(modEventBus);
         ModSounds.register(modEventBus);
+
+        ModParticles.register(modEventBus);
+
+        ModRecipes.initializeDustInteractions();
 
         modEventBus.addListener(this::commonSetup);
 

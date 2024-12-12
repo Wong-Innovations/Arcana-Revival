@@ -1,10 +1,19 @@
 {
+  "dust": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "arcana:dust",
+        "stream": false
+      }
+    ]
+  },
   "poof": {
     "category": "ambient",
     "subtitle": "sounds.arcana.poof",
     "sounds": [
-      "thaumcraft:poof1",
-      "thaumcraft:poof2"
+      "arcana:poof1",
+      "arcana:poof2"
     ]
   }
 }
