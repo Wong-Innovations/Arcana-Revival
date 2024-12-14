@@ -20,6 +20,8 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 
 import java.util.*;
 
@@ -32,23 +34,15 @@ public class ParticleEngine {
     private static final HashMap<ResourceKey<Level>, ArrayList<FXGeneric>> particles = new HashMap<>();
     private static final ArrayList<ParticleDelay> particlesDelayed = new ArrayList<>();
 
-//    @SubscribeEvent
-//    public static void renderParticlesEvent(RenderLevelStageEvent event) {
-//        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRIPWIRE_BLOCKS) {
-//            Minecraft minecraft = Minecraft.getInstance();
-//            if (minecraft.level == null) return;
-//            Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(MyRenderType.PARTICLE);
-//        }
-//    }
-
     @SubscribeEvent
     public static void onRenderLevelStageEvent(RenderLevelStageEvent event) {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_PARTICLES) {
+
             float frame = event.getPartialTick();
 //        LocalPlayer entity = Minecraft.getInstance().player;
             ResourceKey<Level> dim = Minecraft.getInstance().level.dimension();
             event.getPoseStack().pushPose();
-            RenderSystem.setShader(GameRenderer::getParticleShader);
+            RenderSystem.setShader(GameRenderer::getPositionColorTexLightmapShader);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.enableBlend();
 //        GlStateManager.alphaFunc(516, 0.003921569F);
@@ -56,34 +50,34 @@ public class ParticleEngine {
             RenderSystem.depthMask(false);
 
 //            for(int layer = 3; layer >= 0; --layer) {
-                if (particles.containsKey(dim)) {
-                    ArrayList<FXGeneric> parts = particles.get(dim);
-                    if (!parts.isEmpty()) {
-                        for (FXGeneric particle : parts) {
-                            if (particle != null) {
-                                try {
-                                    Tesselator tesselator = Tesselator.getInstance();
-                                    BufferBuilder buffer = tesselator.getBuilder();
-                                    buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_LIGHTMAP_COLOR);
-                                    particle.renderParticle(event.getPoseStack(), buffer, event.getCamera(), frame);
-                                    BufferUploader.drawWithShader(buffer.end());
-                                } catch (Throwable exception) {
-                                    CrashReport crashreport = CrashReport.forThrowable(exception, "Rendering Particle");
-                                    CrashReportCategory crashreportcategory = crashreport.addCategory("Particle being rendered");
-                                    crashreportcategory.setDetail("Particle", particle::toString);
-                                    crashreportcategory.setDetail("Particle Type", () -> "ARCANA_PARTICLE_TEXTURE");
-                                    throw new ReportedException(crashreport);
-                                }
+            if (particles.containsKey(dim)) {
+                ArrayList<FXGeneric> parts = particles.get(dim);
+                if (!parts.isEmpty()) {
+                    for (FXGeneric particle : parts) {
+                        if (particle != null) {
+                            try {
+                                Tesselator tesselator = Tesselator.getInstance();
+                                BufferBuilder buffer = tesselator.getBuilder();
+                                buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP);
+                                particle.renderParticle(event.getPoseStack(), buffer, event.getCamera(), frame);
+                                BufferUploader.drawWithShader(buffer.end());
+                            } catch (Throwable exception) {
+                                CrashReport crashreport = CrashReport.forThrowable(exception, "Rendering Particle");
+                                CrashReportCategory crashreportcategory = crashreport.addCategory("Particle being rendered");
+                                crashreportcategory.setDetail("Particle", particle::toString);
+                                crashreportcategory.setDetail("Particle Type", () -> "ARCANA_PARTICLE_TEXTURE");
+                                throw new ReportedException(crashreport);
                             }
                         }
+                    }
 //                        tesselator.end();
 //                        switch (layer) {
 //                            case 2:
 //                            case 3:
 //                                RenderSystem.enableDepthTest();
 //                        }
-                    }
                 }
+            }
 //            }
 
             RenderSystem.depthMask(true);

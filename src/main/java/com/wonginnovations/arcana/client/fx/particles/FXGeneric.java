@@ -246,10 +246,15 @@ public class FXGeneric extends OldParticleBase {
 
             Matrix4f transformationMatrix = ps.last().pose();
 
-            buffer.vertex(transformationMatrix, f5 + (float) avec3d[0].x, f6 + (float) avec3d[0].y, f7 + (float) avec3d[0].z).uv(tx2, ty2).uv2(j, k).color(pr, pg, pb, this.particleAlpha).endVertex();
-            buffer.vertex(transformationMatrix, f5 + (float) avec3d[1].x, f6 + (float) avec3d[1].y, f7 + (float) avec3d[1].z).uv(tx2, ty1).uv2(j, k).color(pr, pg, pb, this.particleAlpha).endVertex();
-            buffer.vertex(transformationMatrix, f5 + (float) avec3d[2].x, f6 + (float) avec3d[2].y, f7 + (float) avec3d[2].z).uv(tx1, ty1).uv2(j, k).color(pr, pg, pb, this.particleAlpha).endVertex();
-            buffer.vertex(transformationMatrix, f5 + (float) avec3d[3].x, f6 + (float) avec3d[3].y, f7 + (float) avec3d[3].z).uv(tx1, ty2).uv2(j, k).color(pr, pg, pb, this.particleAlpha).endVertex();
+//            buffer.vertex(transformationMatrix, f5 + (float) avec3d[0].x, f6 + (float) avec3d[0].y, f7 + (float) avec3d[0].z).uv(tx2, ty2).uv2(0xF000F0).color(pr, pg, pb, this.particleAlpha).endVertex();
+//            buffer.vertex(transformationMatrix, f5 + (float) avec3d[1].x, f6 + (float) avec3d[1].y, f7 + (float) avec3d[1].z).uv(tx2, ty1).uv2(0xF000F0).color(pr, pg, pb, this.particleAlpha).endVertex();
+//            buffer.vertex(transformationMatrix, f5 + (float) avec3d[2].x, f6 + (float) avec3d[2].y, f7 + (float) avec3d[2].z).uv(tx1, ty1).uv2(0xF000F0).color(pr, pg, pb, this.particleAlpha).endVertex();
+//            buffer.vertex(transformationMatrix, f5 + (float) avec3d[3].x, f6 + (float) avec3d[3].y, f7 + (float) avec3d[3].z).uv(tx1, ty2).uv2(0xF000F0).color(pr, pg, pb, this.particleAlpha).endVertex();
+
+            buffer.vertex(transformationMatrix, f5 + (float) avec3d[0].x, f6 + (float) avec3d[0].y, f7 + (float) avec3d[0].z).color(pr, pg, pb, this.particleAlpha).uv(tx2, ty2).uv2(j, k).endVertex();
+            buffer.vertex(transformationMatrix, f5 + (float) avec3d[1].x, f6 + (float) avec3d[1].y, f7 + (float) avec3d[1].z).color(pr, pg, pb, this.particleAlpha).uv(tx2, ty1).uv2(j, k).endVertex();
+            buffer.vertex(transformationMatrix, f5 + (float) avec3d[2].x, f6 + (float) avec3d[2].y, f7 + (float) avec3d[2].z).color(pr, pg, pb, this.particleAlpha).uv(tx1, ty1).uv2(j, k).endVertex();
+            buffer.vertex(transformationMatrix, f5 + (float) avec3d[3].x, f6 + (float) avec3d[3].y, f7 + (float) avec3d[3].z).color(pr, pg, pb, this.particleAlpha).uv(tx1, ty2).uv2(j, k).endVertex();
         }
     }
 
