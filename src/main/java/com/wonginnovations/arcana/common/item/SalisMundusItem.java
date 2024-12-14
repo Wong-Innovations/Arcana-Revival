@@ -6,6 +6,7 @@ import com.wonginnovations.arcana.common.ModSounds;
 import com.wonginnovations.arcana.common.utils.EntityUtils;
 import com.wonginnovations.arcana.common.utils.MathUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -67,7 +68,8 @@ public class SalisMundusItem extends Item {
             FXDispatcher.INSTANCE.drawSimpleSparkle(context.getLevel().random, v1.x, v1.y, v1.z, v2.x / 6.0 + context.getLevel().random.nextGaussian() * 0.05, v2.y / 6.0 + context.getLevel().random.nextGaussian() * 0.05 + (floaty ? 0.05 : 0.15), v2.z / 6.0 + context.getLevel().random.nextGaussian() * 0.05, 0.5F, r, g, b, context.getLevel().random.nextInt(5), floaty ? 0.3F + context.getLevel().random.nextFloat() * 0.5F : 0.85F, floaty ? 0.2F : 0.5F, 16);
         }
 
-        context.getLevel().playSound(null, context.getClickedPos(), ModSounds.DUST.get(), SoundSource.PLAYERS, 0.33F, 1.0F + (float)context.getLevel().random.nextGaussian() * 0.05F);
+        // currently only plays sound and draws dust for the client using the item, maybe change this in the future
+        context.getLevel().playSound(context.getPlayer(), context.getClickedPos(), ModSounds.DUST.get(), SoundSource.PLAYERS, 0.33F, 1.0F + (float)context.getLevel().random.nextGaussian() * 0.05F);
         List<BlockPos> sparkles = interaction.sparkle(context.getLevel(), context.getPlayer(), context.getClickedPos(), place);
         if (sparkles != null) {
             Vec3 v = (new Vec3(context.getClickedPos().getX(), context.getClickedPos().getY(), context.getClickedPos().getZ())).add(context.getClickLocation());
