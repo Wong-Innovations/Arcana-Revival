@@ -9,6 +9,7 @@ import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -31,14 +32,14 @@ public class ParticleEngine {
     private static final HashMap<ResourceKey<Level>, ArrayList<FXGeneric>> particles = new HashMap<>();
     private static final ArrayList<ParticleDelay> particlesDelayed = new ArrayList<>();
 
-    @SubscribeEvent
-    public static void renderParticlesEvent(RenderLevelStageEvent event) {
-        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRIPWIRE_BLOCKS) {
-            Minecraft minecraft = Minecraft.getInstance();
-            if (minecraft.level == null) return;
-            Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(MyRenderType.PARTICLE);
-        }
-    }
+//    @SubscribeEvent
+//    public static void renderParticlesEvent(RenderLevelStageEvent event) {
+//        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_TRIPWIRE_BLOCKS) {
+//            Minecraft minecraft = Minecraft.getInstance();
+//            if (minecraft.level == null) return;
+//            Minecraft.getInstance().renderBuffers().bufferSource().getBuffer(MyRenderType.PARTICLE);
+//        }
+//    }
 
     @SubscribeEvent
     public static void onRenderLevelStageEvent(RenderLevelStageEvent event) {
@@ -47,6 +48,7 @@ public class ParticleEngine {
 //        LocalPlayer entity = Minecraft.getInstance().player;
             ResourceKey<Level> dim = Minecraft.getInstance().level.dimension();
             event.getPoseStack().pushPose();
+            RenderSystem.setShader(GameRenderer::getParticleShader);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
             RenderSystem.enableBlend();
 //        GlStateManager.alphaFunc(516, 0.003921569F);
@@ -57,14 +59,14 @@ public class ParticleEngine {
                 if (particles.containsKey(dim)) {
                     ArrayList<FXGeneric> parts = particles.get(dim);
                     if (!parts.isEmpty()) {
-                        Tesselator tesselator = Tesselator.getInstance();
-                        BufferBuilder buffer = tesselator.getBuilder();
-                        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_LIGHTMAP_COLOR);
-
                         for (FXGeneric particle : parts) {
                             if (particle != null) {
                                 try {
+                                    Tesselator tesselator = Tesselator.getInstance();
+                                    BufferBuilder buffer = tesselator.getBuilder();
+                                    buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_LIGHTMAP_COLOR);
                                     particle.renderParticle(event.getPoseStack(), buffer, event.getCamera(), frame);
+                                    BufferUploader.drawWithShader(buffer.end());
                                 } catch (Throwable exception) {
                                     CrashReport crashreport = CrashReport.forThrowable(exception, "Rendering Particle");
                                     CrashReportCategory crashreportcategory = crashreport.addCategory("Particle being rendered");
@@ -74,7 +76,6 @@ public class ParticleEngine {
                                 }
                             }
                         }
-                        BufferUploader.drawWithShader(buffer.end());
 //                        tesselator.end();
 //                        switch (layer) {
 //                            case 2:
