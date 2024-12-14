@@ -1,6 +1,7 @@
 {
   "dust": {
-    "category": "block",
+    "category": "player",
+    "subtitle": "sounds.arcana.dust",
     "sounds": [
       {
         "name": "arcana:dust",
