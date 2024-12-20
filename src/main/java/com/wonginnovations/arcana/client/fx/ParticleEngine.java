@@ -4,14 +4,17 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.wonginnovations.arcana.Arcana;
 import com.wonginnovations.arcana.client.fx.particles.FXGeneric;
+import com.wonginnovations.arcana.client.fx.particles.OldParticleBase;
 import net.minecraft.CrashReport;
 import net.minecraft.CrashReportCategory;
 import net.minecraft.ReportedException;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -53,13 +56,24 @@ public class ParticleEngine {
             if (particles.containsKey(dim)) {
                 ArrayList<FXGeneric> parts = particles.get(dim);
                 if (!parts.isEmpty()) {
+                    int i = (Minecraft.getInstance().options.getCameraType() == CameraType.THIRD_PERSON_FRONT)? 1 : 0;
+                    float rotationX = Mth.cos(event.getCamera().getEntity().getYRot() * 0.017453292F) * (float)(1 - i * 2);
+                    float rotationZ = Mth.sin(event.getCamera().getEntity().getYRot() * 0.017453292F) * (float)(1 - i * 2);
+                    float rotationYZ = -rotationZ * Mth.sin(event.getCamera().getEntity().getXRot() * 0.017453292F) * (float)(1 - i * 2);
+                    float rotationXY = rotationX * Mth.sin(event.getCamera().getEntity().getXRot() * 0.017453292F) * (float)(1 - i * 2);
+                    float rotationXZ = Mth.cos(event.getCamera().getEntity().getXRot() * 0.017453292F);
+                    OldParticleBase.interpPosX = event.getCamera().getEntity().xOld + (event.getCamera().getEntity().getX() - event.getCamera().getEntity().xOld) * (double)frame;
+                    OldParticleBase.interpPosY = event.getCamera().getEntity().yOld + (event.getCamera().getEntity().getY() - event.getCamera().getEntity().yOld) * (double)frame;
+                    OldParticleBase.interpPosZ = event.getCamera().getEntity().zOld + (event.getCamera().getEntity().getZ() - event.getCamera().getEntity().zOld) * (double)frame;
+
                     for (FXGeneric particle : parts) {
                         if (particle != null) {
                             try {
                                 Tesselator tesselator = Tesselator.getInstance();
                                 BufferBuilder buffer = tesselator.getBuilder();
                                 buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP);
-                                particle.renderParticle(event.getPoseStack(), buffer, event.getCamera(), frame);
+                                // why the hecking heck does this mix up the rotations in order to work.......
+                                particle.renderParticle(event.getPoseStack(), buffer, event.getCamera().getEntity(), frame, rotationX, rotationXZ, rotationZ, rotationYZ, rotationXY);
                                 BufferUploader.drawWithShader(buffer.end());
                             } catch (Throwable exception) {
                                 CrashReport crashreport = CrashReport.forThrowable(exception, "Rendering Particle");

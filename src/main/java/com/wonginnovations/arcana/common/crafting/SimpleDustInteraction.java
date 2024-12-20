@@ -1,9 +1,10 @@
 package com.wonginnovations.arcana.common.crafting;
 
 import com.wonginnovations.arcana.api.crafting.IDustInteraction;
+import com.wonginnovations.arcana.common.events.ServerEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -32,11 +33,7 @@ public class SimpleDustInteraction implements IDustInteraction {
 
     @Override
     public void execute(Level level, Player player, BlockPos blockPos, Placement placement, Direction direction) {
-//        MinecraftForge.EVENT_BUS.post(new PlayerEvent.ItemCraftedEvent(player, this.result, new ));
-//        ServerEvents.addRunnableServer(level, new Runnable() {
-//            public void run() {
-//                ServerEvents.addSwapper(level, pos, state, DustTriggerSimple.this.result, false, 0, player, true, true, -9999, false, false, 0, ServerEvents.DEFAULT_PREDICATE, 0.0F);
-//            }
-//        }, 50);
+        MinecraftForge.EVENT_BUS.post(new PlayerEvent.ItemCraftedEvent(player, this.result, new SimpleContainer(1)));
+        ServerEvents.addRunnableServer(level, () -> ServerEvents.addSwapper(level, blockPos, level.getBlockState(blockPos), SimpleDustInteraction.this.result, false, 0, player, true, true, -9999, false, false, 0, ServerEvents.DEFAULT_PREDICATE, 0.0F), 50);
     }
 }

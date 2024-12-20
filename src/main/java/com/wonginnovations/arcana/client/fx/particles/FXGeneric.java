@@ -5,12 +5,12 @@ import com.wonginnovations.arcana.common.utils.MathUtils;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.joml.AxisAngle4f;
-import org.joml.Matrix4d;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
@@ -145,6 +145,7 @@ public class FXGeneric extends OldParticleBase {
         float rotationYZ = -rotationZ * Mth.sin(camera.getEntity().getXRot() * 0.017453292F) * (float)(1 - i * 2);
         float rotationXY = rotationX * Mth.sin(camera.getEntity().getXRot() * 0.017453292F) * (float)(1 - i * 2);
         float rotationXZ = Mth.cos(camera.getEntity().getXRot() * 0.017453292F);
+
         this.renderParticle(ps, bb, camera.getEntity(), partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
     }
 
@@ -164,6 +165,8 @@ public class FXGeneric extends OldParticleBase {
 
             this.setParticleTextureIndex(this.finalFrames[frame]);
         }
+
+        cameraViewDir = entity.getViewVector(partialTicks);
 
         this.particleAlpha = this.alphaFrames.length <= 0 ? 0.0F : this.alphaFrames[Math.min(this.particleAge, this.alphaFrames.length - 1)];
         this.particleScale = this.scaleFrames.length <= 0 ? 0.0F : this.scaleFrames[Math.min(this.particleAge, this.scaleFrames.length - 1)];
@@ -202,13 +205,10 @@ public class FXGeneric extends OldParticleBase {
         float pr = this.particleRed + (this.dr - this.particleRed) * fs;
         float pg = this.particleGreen + (this.dg - this.particleGreen) * fs;
         float pb = this.particleBlue + (this.db - this.particleBlue) * fs;
-        int i = this.getBrightnessForRender(partialTicks);
-//        int j = i >> 16 & '\uffff';
-//        int k = i & '\uffff';
-        int j = i * 16;
-        int k = 15 - i;
+
+        int packedBrightness = this.getBrightnessForRender();
         float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
-        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
+        float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY - entityIn.getEyeHeight(entityIn.getPose())); // offset because the rendering context already accounts for player eye height
         float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
         if (this.angled) {
 //            Tesselator.getInstance().end();
@@ -221,14 +221,12 @@ public class FXGeneric extends OldParticleBase {
                 ps.mulPose(new Quaternionf(new AxisAngle4f(f8 * 57.29577951308232F, 0.0F, 0.0F, 0.0F)));
             }
 
-            buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_LIGHTMAP_COLOR);
-            buffer.vertex(-ts, -ts, 0.0).uv(tx2, ty2).uv2(j, k).color(pr, pg, pb, this.particleAlpha).endVertex();
-            buffer.vertex(-ts, ts, 0.0).uv(tx2, ty1).uv2(j, k).color(pr, pg, pb, this.particleAlpha).endVertex();
-            buffer.vertex(ts, ts, 0.0).uv(tx1, ty1).uv2(j, k).color(pr, pg, pb, this.particleAlpha).endVertex();
-            buffer.vertex(ts, -ts, 0.0).uv(tx1, ty2).uv2(j, k).color(pr, pg, pb, this.particleAlpha).endVertex();
+            buffer.vertex(-ts, -ts, 0.0).color(pr, pg, pb, this.particleAlpha).uv(tx2, ty2).uv2(packedBrightness).endVertex();
+            buffer.vertex(-ts, ts, 0.0).color(pr, pg, pb, this.particleAlpha).uv(tx2, ty1).uv2(packedBrightness).endVertex();
+            buffer.vertex(ts, ts, 0.0).color(pr, pg, pb, this.particleAlpha).uv(tx1, ty1).uv2(packedBrightness).endVertex();
+            buffer.vertex(ts, -ts, 0.0).color(pr, pg, pb, this.particleAlpha).uv(tx1, ty2).uv2(packedBrightness).endVertex();
 //            Tesselator.getInstance().end();
             ps.popPose();
-            buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_LIGHTMAP_COLOR);
         } else {
             Vec3[] avec3d = new Vec3[]{new Vec3(-rotationX * ts - rotationXY * ts, -rotationZ * ts, -rotationYZ * ts - rotationXZ * ts), new Vec3(-rotationX * ts + rotationXY * ts, rotationZ * ts, -rotationYZ * ts + rotationXZ * ts), new Vec3(rotationX * ts + rotationXY * ts, rotationZ * ts, rotationYZ * ts + rotationXZ * ts), new Vec3(rotationX * ts - rotationXY * ts, -rotationZ * ts, rotationYZ * ts - rotationXZ * ts)};
             if (this.particleAngle != 0.0F) {
@@ -246,15 +244,10 @@ public class FXGeneric extends OldParticleBase {
 
             Matrix4f transformationMatrix = ps.last().pose();
 
-//            buffer.vertex(transformationMatrix, f5 + (float) avec3d[0].x, f6 + (float) avec3d[0].y, f7 + (float) avec3d[0].z).uv(tx2, ty2).uv2(0xF000F0).color(pr, pg, pb, this.particleAlpha).endVertex();
-//            buffer.vertex(transformationMatrix, f5 + (float) avec3d[1].x, f6 + (float) avec3d[1].y, f7 + (float) avec3d[1].z).uv(tx2, ty1).uv2(0xF000F0).color(pr, pg, pb, this.particleAlpha).endVertex();
-//            buffer.vertex(transformationMatrix, f5 + (float) avec3d[2].x, f6 + (float) avec3d[2].y, f7 + (float) avec3d[2].z).uv(tx1, ty1).uv2(0xF000F0).color(pr, pg, pb, this.particleAlpha).endVertex();
-//            buffer.vertex(transformationMatrix, f5 + (float) avec3d[3].x, f6 + (float) avec3d[3].y, f7 + (float) avec3d[3].z).uv(tx1, ty2).uv2(0xF000F0).color(pr, pg, pb, this.particleAlpha).endVertex();
-
-            buffer.vertex(transformationMatrix, f5 + (float) avec3d[0].x, f6 + (float) avec3d[0].y, f7 + (float) avec3d[0].z).color(pr, pg, pb, this.particleAlpha).uv(tx2, ty2).uv2(j, k).endVertex();
-            buffer.vertex(transformationMatrix, f5 + (float) avec3d[1].x, f6 + (float) avec3d[1].y, f7 + (float) avec3d[1].z).color(pr, pg, pb, this.particleAlpha).uv(tx2, ty1).uv2(j, k).endVertex();
-            buffer.vertex(transformationMatrix, f5 + (float) avec3d[2].x, f6 + (float) avec3d[2].y, f7 + (float) avec3d[2].z).color(pr, pg, pb, this.particleAlpha).uv(tx1, ty1).uv2(j, k).endVertex();
-            buffer.vertex(transformationMatrix, f5 + (float) avec3d[3].x, f6 + (float) avec3d[3].y, f7 + (float) avec3d[3].z).color(pr, pg, pb, this.particleAlpha).uv(tx1, ty2).uv2(j, k).endVertex();
+            buffer.vertex(transformationMatrix, f5 + (float) avec3d[0].x, f6 + (float) avec3d[0].y, f7 + (float) avec3d[0].z).color(pr, pg, pb, this.particleAlpha).uv(tx2, ty2).uv2(packedBrightness).endVertex();
+            buffer.vertex(transformationMatrix, f5 + (float) avec3d[1].x, f6 + (float) avec3d[1].y, f7 + (float) avec3d[1].z).color(pr, pg, pb, this.particleAlpha).uv(tx2, ty1).uv2(packedBrightness).endVertex();
+            buffer.vertex(transformationMatrix, f5 + (float) avec3d[2].x, f6 + (float) avec3d[2].y, f7 + (float) avec3d[2].z).color(pr, pg, pb, this.particleAlpha).uv(tx1, ty1).uv2(packedBrightness).endVertex();
+            buffer.vertex(transformationMatrix, f5 + (float) avec3d[3].x, f6 + (float) avec3d[3].y, f7 + (float) avec3d[3].z).color(pr, pg, pb, this.particleAlpha).uv(tx1, ty2).uv2(packedBrightness).endVertex();
         }
     }
 

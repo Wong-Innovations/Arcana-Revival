@@ -1,12 +1,14 @@
 package com.wonginnovations.arcana.client.fx.particles;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -198,7 +200,7 @@ public class OldParticleBase
         float f5 = (float)(this.prevPosX + (this.posX - this.prevPosX) * (double)partialTicks - interpPosX);
         float f6 = (float)(this.prevPosY + (this.posY - this.prevPosY) * (double)partialTicks - interpPosY);
         float f7 = (float)(this.prevPosZ + (this.posZ - this.prevPosZ) * (double)partialTicks - interpPosZ);
-        int i = this.getBrightnessForRender(partialTicks);
+        int i = this.getBrightnessForRender();
         int j = i >> 16 & 65535;
         int k = i & 65535;
         Vec3[] vec3Array = new Vec3[] {new Vec3(-rotationX * f4 - rotationXY * f4, -rotationZ * f4, -rotationYZ * f4 - rotationXZ * f4), new Vec3(-rotationX * f4 + rotationXY * f4, rotationZ * f4, -rotationYZ * f4 + rotationXZ * f4), new Vec3(rotationX * f4 + rotationXY * f4, rotationZ * f4, rotationYZ * f4 + rotationXZ * f4), new Vec3(rotationX * f4 - rotationXY * f4, -rotationZ * f4, rotationYZ * f4 - rotationXZ * f4)};
@@ -363,10 +365,12 @@ public class OldParticleBase
         this.posZ = (AABB.minZ + AABB.maxZ) / 2.0D;
     }
 
-    public int getBrightnessForRender(float partialTick)
+    public int getBrightnessForRender()
     {
         BlockPos blockpos = new BlockPos((int) this.posX, (int) this.posY, (int) this.posZ);
-        return this.level.hasChunkAt(blockpos) ? this.level.getRawBrightness(blockpos, 0) : 0;
+        return this.level.hasChunkAt(blockpos)
+                ? LightTexture.pack(this.level.getBrightness(LightLayer.BLOCK, blockpos), this.level.getBrightness(LightLayer.SKY, blockpos))
+                : 0;
     }
 
     /**

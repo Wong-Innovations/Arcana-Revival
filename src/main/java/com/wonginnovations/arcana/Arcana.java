@@ -8,6 +8,7 @@ import com.wonginnovations.arcana.common.ModRecipes;
 import com.wonginnovations.arcana.common.ModSounds;
 import com.wonginnovations.arcana.common.item.ModCreativeModeTabs;
 import com.wonginnovations.arcana.common.item.ModItems;
+import com.wonginnovations.arcana.common.network.PacketHandler;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -47,6 +48,7 @@ public class Arcana
         ModSounds.register(modEventBus);
 
         ModParticles.register(modEventBus);
+        PacketHandler.registerPackets();
 
         ModRecipes.initializeDustInteractions();
 
