@@ -1,6 +1,7 @@
 package com.wonginnovations.arcana.common.events;
 
 import com.google.common.base.Predicate;
+import com.wonginnovations.arcana.common.entities.ModEntityTypes;
 import com.wonginnovations.arcana.common.entities.SpecialItemEntity;
 import com.wonginnovations.arcana.common.network.PacketHandler;
 import com.wonginnovations.arcana.common.network.fx.FXBlockBamfPacket;

@@ -2,10 +2,10 @@ package com.wonginnovations.arcana;
 
 import com.mojang.logging.LogUtils;
 import com.wonginnovations.arcana.client.ClientProxy;
-import com.wonginnovations.arcana.client.fx.ModParticles;
 import com.wonginnovations.arcana.common.CommonProxy;
 import com.wonginnovations.arcana.common.ModRecipes;
 import com.wonginnovations.arcana.common.ModSounds;
+import com.wonginnovations.arcana.common.entities.ModEntityTypes;
 import com.wonginnovations.arcana.common.item.ModCreativeModeTabs;
 import com.wonginnovations.arcana.common.item.ModItems;
 import com.wonginnovations.arcana.common.network.PacketHandler;
@@ -46,8 +46,7 @@ public class Arcana
 
         ModItems.register(modEventBus);
         ModSounds.register(modEventBus);
-
-        ModParticles.register(modEventBus);
+        ModEntityTypes.register(modEventBus);
         PacketHandler.registerPackets();
 
         ModRecipes.initializeDustInteractions();

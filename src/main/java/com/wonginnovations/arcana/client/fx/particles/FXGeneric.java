@@ -5,12 +5,10 @@ import com.wonginnovations.arcana.common.utils.MathUtils;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.joml.AxisAngle4f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
@@ -214,11 +212,11 @@ public class FXGeneric extends OldParticleBase {
 //            Tesselator.getInstance().end();
             ps.pushPose();
             ps.translate(f5, f6, f7);
-            ps.mulPose(new Quaternionf(new AxisAngle4f(-this.angleYaw + 90.0F, 0.0F, 1.0F, 0.0F)));
-            ps.mulPose(new Quaternionf(new AxisAngle4f(this.anglePitch + 90.0F, 1.0F, 0.0F, 0.0F)));
+            ps.mulPose(new Quaternionf(0.0F, 1.0F, 0.0F, -this.angleYaw + 90.0F));
+            ps.mulPose(new Quaternionf(1.0F, 0.0F, 0.0F, this.anglePitch + 90.0F));
             if (this.particleAngle != 0.0F) {
                 float f8 = this.particleAngle + (this.particleAngle - this.prevParticleAngle) * partialTicks;
-                ps.mulPose(new Quaternionf(new AxisAngle4f(f8 * 57.29577951308232F, 0.0F, 0.0F, 0.0F)));
+                ps.mulPose(new Quaternionf(0.0F, 0.0F, 0.0F, f8 * 57.29577951308232F));
             }
 
             buffer.vertex(-ts, -ts, 0.0).color(pr, pg, pb, this.particleAlpha).uv(tx2, ty2).uv2(packedBrightness).endVertex();
