@@ -1,8 +1,14 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "arcana:item/phial_outline",
-    "layer1": "arcana:item/phial",
-    "layer2": "arcana:item/phial_lid"
-  }
+    "layer0": "arcana:item/phial"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "arcana:filled": 1
+      },
+      "model": "arcana:item/phial_filled"
+    }
+  ]
 }
