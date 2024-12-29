@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=east": { "model": "arcana:block/research_table", "y": 90 },
+    "facing=west": { "model": "arcana:block/research_table", "y": 270 },
+    "facing=north": { "model": "arcana:block/research_table" },
+    "facing=south": { "model": "arcana:block/research_table", "y": 180 }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "type": "arcana:salismundus",
+  "ingredients": [
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+      "item": "minecraft:flint"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "arcana:crystal_essence"
+    },
+    {
+      "item": "arcana:crystal_essence"
+    },
+    {
+      "item": "arcana:crystal_essence"
+    }
+  ],
+  "result": {
+    "item": "arcana:salis_mundus",
+    "count": 1
+  }
+}

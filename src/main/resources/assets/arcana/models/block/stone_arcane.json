@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "arcana:block/arcane_stone_1",
+    "up": "arcana:block/arcane_stone_1",
+    "down": "arcana:block/arcane_stone_1",
+    "east": "arcana:block/arcane_stone_2",
+    "west": "arcana:block/arcane_stone_2",
+    "north": "arcana:block/arcane_stone_3",
+    "south": "arcana:block/arcane_stone_3"
+  }
+}
