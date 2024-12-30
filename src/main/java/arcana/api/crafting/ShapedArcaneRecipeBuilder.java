@@ -1,6 +1,7 @@
 package arcana.api.crafting;
 
 import arcana.Arcana;
+import arcana.common.config.ModRecipes;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
@@ -185,7 +186,7 @@ public class ShapedArcaneRecipeBuilder implements RecipeBuilder {
 
         @Override
         public @NotNull RecipeSerializer<?> getType() {
-            return ForgeRegistries.RECIPE_SERIALIZERS.getValue(new ResourceLocation(Arcana.MODID, "arcane_shaped"));
+            return ModRecipes.SHAPED_ARCANE_SERIALIZER.get();
         }
 
         @Nullable

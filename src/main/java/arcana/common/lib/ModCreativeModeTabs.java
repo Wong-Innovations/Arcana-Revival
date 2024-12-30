@@ -31,6 +31,7 @@ public class ModCreativeModeTabs  {
                                     pOutput.accept(stack);
                                 }
                             } else if (itemHolder.get() instanceof ItemPhial) {
+                                pOutput.accept(new ItemStack(ModItems.phial.get()));
                                 for (Aspect aspect : Aspect.aspects.values()) {
                                     ItemStack stack = new ItemStack(ModItems.phial.get());
                                     ((ItemPhial) stack.getItem()).setAspects(stack, new AspectList().add(aspect, ((ItemPhial) stack.getItem()).getBase()));

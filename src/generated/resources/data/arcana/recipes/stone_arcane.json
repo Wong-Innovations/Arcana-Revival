@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "C": {
+      "item": "arcana:crystal_essence"
+    },
+    "K": {
+      "item": "minecraft:stone"
+    }
+  },
+  "pattern": [
+    "KKK",
+    "KCK",
+    "KKK"
+  ],
+  "result": {
+    "count": 9,
+    "item": "arcana:stone_arcane"
+  },
+  "show_notification": true
+}

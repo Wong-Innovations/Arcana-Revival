@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:clay_ball"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    }
+  },
+  "pattern": [
+    " C ",
+    "G G",
+    " G "
+  ],
+  "result": {
+    "count": 8,
+    "item": "arcana:phial"
+  },
+  "show_notification": true
+}

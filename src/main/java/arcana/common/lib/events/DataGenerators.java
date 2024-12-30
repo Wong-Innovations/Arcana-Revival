@@ -1,6 +1,7 @@
 package arcana.common.lib.events;
 
 import arcana.Arcana;
+import arcana.common.config.ModRecipeProvider;
 import arcana.common.world.ModBiomeModifiers;
 import arcana.common.world.ModConfiguredFeatures;
 import arcana.common.world.ModPlacedFeatures;
@@ -31,7 +32,7 @@ public class DataGenerators {
 
         if (event.includeServer()) {
             Set<String> set = Set.of(Arcana.MODID);
-            //        generator.addProvider(true, new ModRecipeProvider(output));
+            generator.addProvider(true, new ModRecipeProvider(output));
             DatapackBuiltinEntriesProvider provider = generator.addProvider(true, new DatapackBuiltinEntriesProvider(
                     output, registries, new RegistrySetBuilder()
                         .add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap)
