@@ -193,7 +193,7 @@ public class GuiResearchTable extends AbstractContainerScreen<ContainerResearchT
         int yy = topPos;
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         RenderSystem.enableBlend();
-        RenderSystem.setShaderTexture(0, txBackground);
+        RenderSystem.setShaderTexture(0, txBackground); // TODO: almost all of these setShaderTexture calls can be removed since GuiGraphics::blit sets the shader tex
         pGuiGraphics.blit(txBackground, xx, yy, 0, 0, 255, 255);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         if (table.data == null) {

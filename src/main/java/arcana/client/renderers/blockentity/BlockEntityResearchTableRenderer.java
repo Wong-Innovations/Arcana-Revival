@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import org.jetbrains.annotations.NotNull;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -59,7 +60,10 @@ public class BlockEntityResearchTableRenderer implements BlockEntityRenderer<Blo
             pPoseStack.mulPose(Axis.YP.rotationDegrees(60.0f));
             pPoseStack.scale(0.5f, 0.5f, 0.5f);
             RenderSystem.enableDepthTest();
-            UtilsFX.renderItemIn2D(pPoseStack, new ResourceLocation(Arcana.MODID, "research/quill"), 0.0625f);
+            pPoseStack.pushPose();
+            RenderSystem.setShaderTexture(0, new ResourceLocation(Arcana.MODID, "textures/research/quill.png"));
+            UtilsFX.renderTextureIn3D(pPoseStack, 1.0f, 1.0f, 0.0f, 0.0f, 16, 16, 0.0625f);
+            pPoseStack.popPose();
             RenderSystem.disableBlend();
             pPoseStack.popPose();
         }

@@ -1,7 +1,9 @@
 package arcana.client.renderers.entity;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
+import net.minecraft.client.renderer.GameRenderer;
 import org.joml.Matrix4f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -20,6 +22,7 @@ public class RenderSpecialItem extends ItemEntityRenderer {
 
     @Override
     public void render(ItemEntity e, float pEntityYaw, float pt, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
         Random random = new Random(187L);
         float var11 = Mth.sin((e.getAge() + pt) / 10.0f + e.bobOffs) * 0.1f + 0.1f;
         pMatrixStack.pushPose();

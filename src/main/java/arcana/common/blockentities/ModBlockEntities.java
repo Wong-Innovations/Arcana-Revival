@@ -16,7 +16,7 @@ public class ModBlockEntities {
 
     public static final RegistryObject<BlockEntityType<?>> ARCANE_WORKBENCH_ENTITY = BLOCK_ENTITIES.register("arcane_workbench",
             () -> BlockEntityType.Builder.of(BlockEntityArcaneWorkbench::new, ModBlocks.arcaneWorkbench.get()).build(null));
-    public static final RegistryObject<BlockEntityType<?>> RESEARCH_TABLE_ENTITY = BLOCK_ENTITIES.register("research_table",
+    public static final RegistryObject<BlockEntityType<BlockEntityResearchTable>> RESEARCH_TABLE_ENTITY = BLOCK_ENTITIES.register("research_table",
             () -> BlockEntityType.Builder.of(BlockEntityResearchTable::new, ModBlocks.researchTable.get()).build(null));
 
     public static void register(IEventBus eventBus) {
