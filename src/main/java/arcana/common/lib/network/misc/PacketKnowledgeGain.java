@@ -33,12 +33,12 @@ public class PacketKnowledgeGain {
         this.cat = buffer.readUtf();
     }
 
-    public void toBytes(FriendlyByteBuf buffer) {
-        buffer.writeByte(this.type);
-        buffer.writeUtf(this.cat);
+    public static void encode(PacketKnowledgeGain message, FriendlyByteBuf buffer) {
+        buffer.writeByte(message.type);
+        buffer.writeUtf(message.cat);
     }
 
-    public static PacketKnowledgeGain fromBytes(FriendlyByteBuf buffer) {
+    public static PacketKnowledgeGain decode(FriendlyByteBuf buffer) {
         return new PacketKnowledgeGain(buffer);
     }
 

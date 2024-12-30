@@ -21,17 +21,17 @@ import java.util.Optional;
 public class PacketHandler {
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(Arcana.MODID, "messages"), () -> "1.0", s -> true, s -> true);
 
-    public static void preInit() {
+    public static void registerPackets() {
         int idx = 0;
-        PacketHandler.INSTANCE.registerMessage(idx++, PacketKnowledgeGain.class, PacketKnowledgeGain::toBytes, PacketKnowledgeGain::fromBytes, PacketKnowledgeGain::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-        PacketHandler.INSTANCE.registerMessage(idx++, PacketStartTheoryToServer.class, PacketStartTheoryToServer::toBytes, PacketStartTheoryToServer::fromBytes, PacketStartTheoryToServer::onMessage, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-        PacketHandler.INSTANCE.registerMessage(idx++, PacketBlockEntityToServer.class, PacketBlockEntityToServer::toBytes, PacketBlockEntityToServer::fromBytes, PacketBlockEntityToServer::onMessage, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-        PacketHandler.INSTANCE.registerMessage(idx++, PacketBlockEntityToClient.class, PacketBlockEntityToClient::toBytes, PacketBlockEntityToClient::fromBytes, PacketBlockEntityToClient::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-        PacketHandler.INSTANCE.registerMessage(idx++, PacketAuraToClient.class, PacketAuraToClient::toBytes, PacketAuraToClient::fromBytes, PacketAuraToClient::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-        PacketHandler.INSTANCE.registerMessage(idx++, PacketSyncWarp.class, PacketSyncWarp::toBytes, PacketSyncWarp::fromBytes, PacketSyncWarp::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-        PacketHandler.INSTANCE.registerMessage(idx++, PacketSyncKnowledge.class, PacketSyncKnowledge::toBytes, PacketSyncKnowledge::fromBytes, PacketSyncKnowledge::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-        PacketHandler.INSTANCE.registerMessage(idx++, PacketWarpMessage.class, PacketWarpMessage::toBytes, PacketWarpMessage::fromBytes, PacketWarpMessage::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-        PacketHandler.INSTANCE.registerMessage(idx++, PacketSyncProgressToServer.class, PacketSyncProgressToServer::toBytes, PacketSyncProgressToServer::fromBytes, PacketSyncProgressToServer::onMessage, Optional.of(NetworkDirection.PLAY_TO_SERVER));
-        PacketHandler.INSTANCE.registerMessage(idx++, PacketFXBlockBamf.class, PacketFXBlockBamf::toBytes, PacketFXBlockBamf::fromBytes, PacketFXBlockBamf::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        PacketHandler.INSTANCE.registerMessage(idx++, PacketKnowledgeGain.class, PacketKnowledgeGain::encode, PacketKnowledgeGain::decode, PacketKnowledgeGain::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        PacketHandler.INSTANCE.registerMessage(idx++, PacketStartTheoryToServer.class, PacketStartTheoryToServer::encode, PacketStartTheoryToServer::decode, PacketStartTheoryToServer::onMessage, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        PacketHandler.INSTANCE.registerMessage(idx++, PacketBlockEntityToServer.class, PacketBlockEntityToServer::encode, PacketBlockEntityToServer::decode, PacketBlockEntityToServer::onMessage, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        PacketHandler.INSTANCE.registerMessage(idx++, PacketBlockEntityToClient.class, PacketBlockEntityToClient::encode, PacketBlockEntityToClient::decode, PacketBlockEntityToClient::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        PacketHandler.INSTANCE.registerMessage(idx++, PacketAuraToClient.class, PacketAuraToClient::encode, PacketAuraToClient::decode, PacketAuraToClient::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        PacketHandler.INSTANCE.registerMessage(idx++, PacketSyncWarp.class, PacketSyncWarp::encode, PacketSyncWarp::decode, PacketSyncWarp::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        PacketHandler.INSTANCE.registerMessage(idx++, PacketSyncKnowledge.class, PacketSyncKnowledge::encode, PacketSyncKnowledge::decode, PacketSyncKnowledge::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        PacketHandler.INSTANCE.registerMessage(idx++, PacketWarpMessage.class, PacketWarpMessage::encode, PacketWarpMessage::decode, PacketWarpMessage::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        PacketHandler.INSTANCE.registerMessage(idx++, PacketSyncProgressToServer.class, PacketSyncProgressToServer::encode, PacketSyncProgressToServer::decode, PacketSyncProgressToServer::onMessage, Optional.of(NetworkDirection.PLAY_TO_SERVER));
+        PacketHandler.INSTANCE.registerMessage(idx++, PacketFXBlockBamf.class, PacketFXBlockBamf::encode, PacketFXBlockBamf::decode, PacketFXBlockBamf::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 }

@@ -18,7 +18,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModBiomeModifiers {
 
-    public static final ResourceKey<BiomeModifier> CRYSTAL_OVERWORLD = registerKey("crystal_overworld");
+    public static final ResourceKey<BiomeModifier> CRYSTAL_OVERWORLD_KEY = registerKey("crystal_overworld");
 
     public static void bootstrap(BootstapContext<BiomeModifier> context) {
         HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
@@ -26,13 +26,14 @@ public class ModBiomeModifiers {
         HolderSet<Biome> overworld = biomes.getOrThrow(BiomeTags.IS_OVERWORLD);
         Holder<PlacedFeature> crystal = placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_CRYSTAL_KEY);
 
-        context.register(CRYSTAL_OVERWORLD, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
+        context.register(CRYSTAL_OVERWORLD_KEY, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
                 overworld,
                 HolderSet.direct(crystal),
-                GenerationStep.Decoration.UNDERGROUND_DECORATION));
+                GenerationStep.Decoration.TOP_LAYER_MODIFICATION));
     }
 
     private static ResourceKey<BiomeModifier> registerKey(String name) {
         return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(Arcana.MODID, name));
     }
+
 }

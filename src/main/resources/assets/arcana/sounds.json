@@ -55,6 +55,12 @@
       "arcana:write2"
     ]
   },
+  "whispers": {
+    "category": "master",
+    "sounds": [
+      "arcana:whispers"
+    ]
+  },
   "scan": {
     "category": "master",
     "sounds": [

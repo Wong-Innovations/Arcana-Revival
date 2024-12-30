@@ -41,14 +41,14 @@ public class PacketSyncProgressToServer {
         noFlags = buffer.readBoolean();
     }
 
-    public void toBytes(FriendlyByteBuf buffer) {
-        buffer.writeUtf(key);
-        buffer.writeBoolean(first);
-        buffer.writeBoolean(checks);
-        buffer.writeBoolean(noFlags);
+    public static void encode(PacketSyncProgressToServer message, FriendlyByteBuf buffer) {
+        buffer.writeUtf(message.key);
+        buffer.writeBoolean(message.first);
+        buffer.writeBoolean(message.checks);
+        buffer.writeBoolean(message.noFlags);
     }
 
-    public static PacketSyncProgressToServer fromBytes(FriendlyByteBuf buffer) {
+    public static PacketSyncProgressToServer decode(FriendlyByteBuf buffer) {
         return new PacketSyncProgressToServer(buffer);
     }
 

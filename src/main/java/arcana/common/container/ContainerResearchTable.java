@@ -1,6 +1,7 @@
 package arcana.common.container;
 
 import arcana.Arcana;
+import arcana.client.gui.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -31,7 +32,7 @@ public class ContainerResearchTable extends AbstractContainerMenu {
     }
 
     public ContainerResearchTable(int id, Inventory inv, BlockEntityResearchTable entity) {
-        super(ForgeRegistries.MENU_TYPES.getValue(new ResourceLocation(Arcana.MODID, "research_table")), id);
+        super(ModMenuTypes.RESEARCH_TABLE_MENU.get(), id);
         player = inv.player;
         blockEntity = entity;
         addSlot(new SlotLimitedByClass(IScribeTools.class, entity, 0, 16, 15));

@@ -15,7 +15,7 @@ public class CommonProxy implements IProxy {
     @Override
     public void preInit(FMLCommonSetupEvent event) {
         ArcanaApi.internalMethods = new InternalMethodHandler();
-        PacketHandler.preInit();
+        PacketHandler.registerPackets();
     }
 
     @Override

@@ -26,12 +26,12 @@ public class PacketBlockEntityToClient {
         nbt = Utils.readNBTTagCompoundFromBuffer(buffer);
     }
 
-    public void toBytes(FriendlyByteBuf buffer) {
-        buffer.writeLong(pos);
-        Utils.writeNBTTagCompoundToBuffer(buffer, nbt);
+    public static void encode(PacketBlockEntityToClient message, FriendlyByteBuf buffer) {
+        buffer.writeLong(message.pos);
+        Utils.writeNBTTagCompoundToBuffer(buffer, message.nbt);
     }
 
-    public static PacketBlockEntityToClient fromBytes(FriendlyByteBuf buffer) {
+    public static PacketBlockEntityToClient decode(FriendlyByteBuf buffer) {
         return new PacketBlockEntityToClient(buffer);
     }
 

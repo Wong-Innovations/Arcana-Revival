@@ -2,7 +2,6 @@ package arcana.common.lib.network.misc;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -35,15 +34,15 @@ public class PacketStartTheoryToServer {
         }
     }
 
-    public void toBytes(FriendlyByteBuf buffer) {
-        buffer.writeLong(pos);
-        buffer.writeByte(aids.size());
-        for (String aid : aids) {
+    public static void encode(PacketStartTheoryToServer message, FriendlyByteBuf buffer) {
+        buffer.writeLong(message.pos);
+        buffer.writeByte(message.aids.size());
+        for (String aid : message.aids) {
             buffer.writeUtf(aid);
         }
     }
 
-    public static PacketStartTheoryToServer fromBytes(FriendlyByteBuf buffer) {
+    public static PacketStartTheoryToServer decode(FriendlyByteBuf buffer) {
         return new PacketStartTheoryToServer(buffer);
     }
 

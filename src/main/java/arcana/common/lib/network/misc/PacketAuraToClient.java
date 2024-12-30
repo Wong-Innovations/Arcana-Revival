@@ -27,13 +27,13 @@ public class PacketAuraToClient {
         flux = dat.readFloat();
     }
 
-    public void toBytes(FriendlyByteBuf dos) {
-        dos.writeShort(base);
-        dos.writeFloat(vis);
-        dos.writeFloat(flux);
+    public static void encode(PacketAuraToClient message, FriendlyByteBuf dos) {
+        dos.writeShort(message.base);
+        dos.writeFloat(message.vis);
+        dos.writeFloat(message.flux);
     }
 
-    public static PacketAuraToClient fromBytes(FriendlyByteBuf buffer) {
+    public static PacketAuraToClient decode(FriendlyByteBuf buffer) {
         return new PacketAuraToClient(buffer);
     }
 

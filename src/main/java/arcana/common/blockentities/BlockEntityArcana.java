@@ -72,7 +72,7 @@ public class BlockEntityArcana extends BlockEntity {
         level.sendBlockUpdated(getBlockPos(), state, state, 2 + (rerender ? 4 : 0));
     }
 
-    @org.jetbrains.annotations.Nullable
+    @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);

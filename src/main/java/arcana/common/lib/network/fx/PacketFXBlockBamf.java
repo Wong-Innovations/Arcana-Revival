@@ -72,16 +72,16 @@ public class PacketFXBlockBamf {
         this.flags = (byte) f;
     }
 
-    public void toBytes(FriendlyByteBuf buffer) {
-        buffer.writeDouble(this.x);
-        buffer.writeDouble(this.y);
-        buffer.writeDouble(this.z);
-        buffer.writeInt(this.color);
-        buffer.writeByte(this.flags);
-        buffer.writeByte(this.face);
+    public static void encode(PacketFXBlockBamf message, FriendlyByteBuf buffer) {
+        buffer.writeDouble(message.x);
+        buffer.writeDouble(message.y);
+        buffer.writeDouble(message.z);
+        buffer.writeInt(message.color);
+        buffer.writeByte(message.flags);
+        buffer.writeByte(message.face);
     }
 
-    public static PacketFXBlockBamf fromBytes(FriendlyByteBuf buffer) {
+    public static PacketFXBlockBamf decode(FriendlyByteBuf buffer) {
         return new PacketFXBlockBamf(buffer);
     }
 

@@ -22,6 +22,7 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> crystal = registerSoundEvent("crystal");
     public static final RegistryObject<SoundEvent> scan = registerSoundEvent("scan");
     public static final RegistryObject<SoundEvent> dust = registerSoundEvent("dust");
+    public static final RegistryObject<SoundEvent> whispers = registerSoundEvent("whispers");
 
     public static SoundType CRYSTAL = new ForgeSoundType(0.5f, 1.0f, ModSounds.crystal, ModSounds.crystal, ModSounds.crystal, ModSounds.crystal, ModSounds.crystal);
 
@@ -29,7 +30,6 @@ public class ModSounds {
         return SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Arcana.MODID, name)));
     }
 
-    // TODO: Call register somewhere
     public static void register(IEventBus eventBus) {
         SOUND_EVENTS.register(eventBus);
     }

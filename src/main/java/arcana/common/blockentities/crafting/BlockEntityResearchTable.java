@@ -1,5 +1,6 @@
 package arcana.common.blockentities.crafting;
 
+import arcana.common.blockentities.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -37,7 +38,7 @@ public class BlockEntityResearchTable extends BlockEntityInventory implements Me
     public ResearchTableData data;
 
     public BlockEntityResearchTable(BlockPos pPos, BlockState pBlockState) {
-        super(ForgeRegistries.BLOCK_ENTITY_TYPES.getValue(new ResourceLocation("arcana", "research_table")), pPos, pBlockState, 2);
+        super(ModBlockEntities.RESEARCH_TABLE_ENTITY.get(), pPos, pBlockState, 2);
         data = null;
         syncedSlots = new int[]{0, 1};
     }

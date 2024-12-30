@@ -32,11 +32,11 @@ public class PacketSyncKnowledge {
         this.data = Utils.readNBTTagCompoundFromBuffer(buffer);
     }
 
-    public void toBytes(FriendlyByteBuf buffer) {
-        Utils.writeNBTTagCompoundToBuffer(buffer, this.data);
+    public static void encode(PacketSyncKnowledge message, FriendlyByteBuf buffer) {
+        Utils.writeNBTTagCompoundToBuffer(buffer, message.data);
     }
 
-    public static PacketSyncKnowledge fromBytes(FriendlyByteBuf buffer) {
+    public static PacketSyncKnowledge decode(FriendlyByteBuf buffer) {
         return new PacketSyncKnowledge(buffer);
     }
 

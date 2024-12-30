@@ -29,11 +29,11 @@ public class PacketSyncWarp {
         this.data = Utils.readNBTTagCompoundFromBuffer(buffer);
     }
 
-    public void toBytes(FriendlyByteBuf buffer) {
-        Utils.writeNBTTagCompoundToBuffer(buffer, this.data);
+    public static void encode(PacketSyncWarp message, FriendlyByteBuf buffer) {
+        Utils.writeNBTTagCompoundToBuffer(buffer, message.data);
     }
 
-    public static PacketSyncWarp fromBytes(FriendlyByteBuf buffer) {
+    public static PacketSyncWarp decode(FriendlyByteBuf buffer) {
         return new PacketSyncWarp(buffer);
     }
 
