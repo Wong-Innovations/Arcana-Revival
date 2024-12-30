@@ -1,6 +1,5 @@
 package arcana.common.lib.crafting;
 
-import arcana.Arcana;
 import arcana.common.config.ModRecipes;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +11,6 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
 import arcana.common.items.ModItems;
 import arcana.common.items.consumables.ItemPhial;
 import org.jetbrains.annotations.NotNull;

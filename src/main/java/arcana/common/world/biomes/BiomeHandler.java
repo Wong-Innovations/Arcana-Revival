@@ -8,9 +8,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.common.Tags;
 import arcana.api.aspects.Aspect;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

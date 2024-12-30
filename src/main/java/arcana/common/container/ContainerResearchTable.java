@@ -1,16 +1,13 @@
 package arcana.common.container;
 
-import arcana.Arcana;
 import arcana.client.gui.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.registries.ForgeRegistries;
 import arcana.api.items.IScribeTools;
 import arcana.api.research.theorycraft.ResearchTableData;
 import arcana.api.research.theorycraft.TheorycraftCard;

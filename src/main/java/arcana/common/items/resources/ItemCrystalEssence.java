@@ -1,14 +1,9 @@
 package arcana.common.items.resources;
 
 import net.minecraft.client.resources.language.I18n;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import arcana.api.aspects.Aspect;
-import arcana.api.aspects.AspectList;
 import arcana.common.items.ItemEssentiaContainer;
 
 public class ItemCrystalEssence extends ItemEssentiaContainer {
