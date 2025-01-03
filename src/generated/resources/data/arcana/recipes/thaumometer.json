@@ -8,6 +8,7 @@
     "perditio": 1,
     "terra": 1
   },
+  "group": "arcana:arcane_workbench",
   "key": {
     "G": {
       "item": "minecraft:glass_pane"

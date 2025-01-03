@@ -1,7 +1,11 @@
 package arcana.api;
 
+import arcana.api.crafting.CrucibleRecipe;
+import arcana.api.crafting.IArcaneRecipe;
+import arcana.api.crafting.IResearchRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import arcana.api.aspects.AspectEventProxy;
@@ -21,12 +25,20 @@ public class ArcanaApi {
         }
     }
 
+    public static HashMap<ResourceLocation, IResearchRecipe> getCraftingRecipes() {
+        return CommonInternals.craftingRecipeCatalog;
+    }
+
     public static HashMap<ResourceLocation, Object> getCraftingRecipesFake() {
         return CommonInternals.craftingRecipeCatalogFake;
     }
 
     public static void addFakeCraftingRecipe(ResourceLocation registry, Object recipe) {
         getCraftingRecipesFake().put(registry, recipe);
+    }
+
+    public static void addCrucibleRecipe(ResourceLocation registry, CrucibleRecipe recipe) {
+        getCraftingRecipes().put(registry, recipe);
     }
 
     public static boolean exists(ItemStack item) {
@@ -57,7 +69,12 @@ public class ArcanaApi {
     }
 
     @Deprecated
-    public static void registerObjectTag(TagKey<Block> oreDict, AspectList aspects) {
-        (new AspectEventProxy()).registerObjectTag(oreDict, aspects);
+    public static void registerItemTag(TagKey<Item> oreDict, AspectList aspects) {
+        (new AspectEventProxy()).registerItemTag(oreDict, aspects);
+    }
+
+    @Deprecated
+    public static void registerBlockTag(TagKey<Block> oreDict, AspectList aspects) {
+        (new AspectEventProxy()).registerBlockTag(oreDict, aspects);
     }
 }

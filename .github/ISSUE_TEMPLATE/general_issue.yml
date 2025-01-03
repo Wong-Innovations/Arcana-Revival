@@ -1,5 +1,5 @@
 name: General Issue
-description: Report a bug or problem with Arcana
+description: Report a bug or problem with Arcana.
 body:
   - type: markdown
     attributes:

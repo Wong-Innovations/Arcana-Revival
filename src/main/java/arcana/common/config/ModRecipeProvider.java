@@ -1,6 +1,8 @@
 package arcana.common.config;
 
 import arcana.Arcana;
+import arcana.api.ArcanaApiHelper;
+import arcana.api.crafting.*;
 import net.minecraft.core.NonNullList;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -16,9 +18,6 @@ import arcana.api.ArcanaApi;
 import arcana.api.aspects.Aspect;
 import arcana.api.aspects.AspectList;
 import arcana.common.blocks.ModBlocks;
-import arcana.api.crafting.IDustTrigger;
-import arcana.api.crafting.IThaumcraftRecipe;
-import arcana.api.crafting.ShapedArcaneRecipeBuilder;
 import arcana.api.internal.CommonInternals;
 import arcana.common.items.ModItems;
 import arcana.common.lib.crafting.DustTriggerOre;
@@ -42,6 +41,17 @@ public class ModRecipeProvider extends RecipeProvider {
         IDustTrigger.registerDustTrigger(new DustTriggerOre("FIRSTSTEPS@1", "workbench", new ItemStack(ModBlocks.arcaneWorkbench.get())));
     }
 
+    public static void initializeAlchemyRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
+        for (Aspect aspect : Aspect.aspects.values()) {
+            ResourceLocation recipeId = new ResourceLocation("arcana:vis_crystal_" + aspect.getTag());
+            new CrucibleRecipeBuilder(ArcanaApiHelper.makeCrystal(aspect)).group("arcana:viscrystalgroup")
+                            .research("BASEALCHEMY")
+                            .aspects(new AspectList().add(aspect, 2))
+                            .catalyst(Tags.Items.GEMS_QUARTZ)
+                            .save(pFinishedRecipeConsumer, recipeId);
+        }
+    }
+
     public static void initializeFakeRecipes() {
         ArcanaApi.addFakeCraftingRecipe(new ResourceLocation(Arcana.MODID, "salismundusfake"), new ShapelessRecipe(new ResourceLocation(Arcana.MODID, "salismundusfake"), ModRecipeProvider.defaultGroup, CraftingBookCategory.MISC, new ItemStack(ModItems.salisMundus.get()), NonNullList.of(Ingredient.EMPTY, Ingredient.of(Items.FLINT), Ingredient.of(Items.BOWL), Ingredient.of(Items.REDSTONE), Ingredient.of(new ItemStack(ModItems.crystalEssence.get(), 1)), Ingredient.of(new ItemStack(ModItems.crystalEssence.get(), 1)), Ingredient.of(new ItemStack(ModItems.crystalEssence.get(), 1)))));
     }
@@ -50,10 +60,11 @@ public class ModRecipeProvider extends RecipeProvider {
     protected void buildRecipes(@NotNull Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
         ModRecipeProvider.initializeNormalRecipes(pFinishedRecipeConsumer);
         ModRecipeProvider.initializeArcaneRecipes(pFinishedRecipeConsumer);
+        ModRecipeProvider.initializeAlchemyRecipes(pFinishedRecipeConsumer);
     }
 
     public static void initializeArcaneRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
-        ShapedArcaneRecipeBuilder.shaped(ModItems.thaumometer.get()).group(ModRecipeProvider.defaultGroup)
+        ShapedArcaneRecipeBuilder.shaped(ModItems.thaumometer.get()).group("arcana:arcane_workbench")
                 .research("FIRSTSTEPS@2")
                 .vis(20)
                 .crystals(new AspectList()
@@ -142,12 +153,9 @@ public class ModRecipeProvider extends RecipeProvider {
             }
         }
         for (ResourceLocation reg : CommonInternals.craftingRecipeCatalog.keySet()) {
-            IThaumcraftRecipe recipe2 = CommonInternals.craftingRecipeCatalog.get(reg);
+            IResearchRecipe recipe2 = CommonInternals.craftingRecipeCatalog.get(reg);
             if (recipe2 != null) {
                 String group = recipe2.getGroup();
-                if (group == null) {
-                    continue;
-                }
                 if (group.trim().isEmpty()) {
                     continue;
                 }
@@ -164,11 +172,8 @@ public class ModRecipeProvider extends RecipeProvider {
                 String group = "";
                 if (recipe3 instanceof CraftingRecipe) {
                     group = ((CraftingRecipe) recipe3).getGroup();
-                } else if (recipe3 instanceof IThaumcraftRecipe) {
-                    group = ((IThaumcraftRecipe) recipe3).getGroup();
-                }
-                if (group == null) {
-                    continue;
+                } else if (recipe3 instanceof IResearchRecipe) {
+                    group = ((IResearchRecipe) recipe3).getGroup();
                 }
                 if (group.trim().isEmpty()) {
                     continue;

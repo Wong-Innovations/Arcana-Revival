@@ -1,5 +1,8 @@
 package arcana.client.lib;
 
+
+import arcana.Arcana;
+import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -9,16 +12,23 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.IForgeGuiGraphics;
 import arcana.api.aspects.Aspect;
 import arcana.client.fx.ParticleEngine;
 import arcana.common.config.ModConfig;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,6 +37,21 @@ import java.util.List;
 public class UtilsFX {
     static DecimalFormat myFormatter = new DecimalFormat("#######.##");
     public static boolean hideStackOverlay = false;
+
+    public static final VertexFormat POSITION_TEX_COLOR_LIGHTMAP_NORMAL = new VertexFormat(ImmutableMap.<String, VertexFormatElement>builder()
+            .put("Position", DefaultVertexFormat.ELEMENT_POSITION)
+            .put("UV0", DefaultVertexFormat.ELEMENT_UV0)
+            .put("Color", DefaultVertexFormat.ELEMENT_COLOR)
+            .put("UV2", DefaultVertexFormat.ELEMENT_UV2)
+            .put("Normal", DefaultVertexFormat.ELEMENT_NORMAL)
+            .put("Padding", DefaultVertexFormat.ELEMENT_PADDING)
+            .build());
+
+    public static ShaderInstance SHADER_POSITION_TEX_COLOR_LIGHTMAP_NORMAL;
+
+    public static ShaderInstance getPositionTexColorLightmapNormalShader() {
+        return SHADER_POSITION_TEX_COLOR_LIGHTMAP_NORMAL;
+    }
 
     public static void drawTexturedQuad(PoseStack poseStack, float x, float y, float uOffset, float vOffset, float uWidth, float vHeight, double zLevel) {
         float var7 = 0.00390625f;
@@ -194,6 +219,68 @@ public class UtilsFX {
             poseStack.popPose();
             poseStack.translate(0,0, -poseStack.last().pose().m32());
         }
+    }
+
+    public static void renderQuadFromIcon(@NotNull PoseStack pPoseStack, TextureAtlasSprite icon, float scale, float red, float green, float blue, int brightness, int blend, float opacity) {
+        boolean blendon = GL11.glIsEnabled(GL11.GL_BLEND);
+        boolean depthon = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
+        RenderSystem.setShaderTexture(0, icon.atlasLocation());
+        float f1 = icon.getU1();
+        float f2 = icon.getV0();
+        float f3 = icon.getU0();
+        float f4 = icon.getV1();
+        pPoseStack.scale(scale, scale, scale);
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(770, blend);
+        RenderSystem.enableDepthTest();
+        RenderSystem.setShaderColor(red, green, blue, opacity);
+
+        Matrix4f matrix = pPoseStack.last().pose();
+        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
+        if (brightness > -1) {
+            RenderSystem.setShader(UtilsFX::getPositionTexColorLightmapNormalShader);
+            bufferBuilder.begin(VertexFormat.Mode.QUADS, POSITION_TEX_COLOR_LIGHTMAP_NORMAL);
+        } else {
+            RenderSystem.setShader(GameRenderer::getPositionTexColorNormalShader);
+            bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR_NORMAL);
+        }
+
+        bufferBuilder.vertex(matrix, 0.0F, 0.0F, 0.0F).uv(f1, f4).color(red, green, blue, opacity);
+        if (brightness > -1) {
+            bufferBuilder.uv2(brightness);
+        }
+        bufferBuilder.normal(0.0F, 0.0F, 1.0F).endVertex();
+
+        bufferBuilder.vertex(matrix, 1.0F, 0.0F, 0.0F).uv(f3, f4).color(red, green, blue, opacity);
+        if (brightness > -1) {
+            bufferBuilder.uv2(brightness);
+        }
+        bufferBuilder.normal(0.0F, 0.0F, 1.0F).endVertex();
+
+        bufferBuilder.vertex(matrix, 1.0F, 1.0F, 0.0F).uv(f3, f2).color(red, green, blue, opacity);
+        if (brightness > -1) {
+            bufferBuilder.uv2(brightness);
+        }
+        bufferBuilder.normal(0.0F, 0.0F, 1.0F);
+        bufferBuilder.endVertex();
+
+        bufferBuilder.vertex(matrix, 0.0F, 1.0F, 0.0F).uv(f1, f2).color(red, green, blue, opacity);
+        if (brightness > -1) {
+            bufferBuilder.uv2(brightness);
+        }
+        bufferBuilder.normal(0.0F, 0.0F, 1.0F);
+        bufferBuilder.endVertex();
+
+        BufferUploader.drawWithShader(bufferBuilder.end());
+        RenderSystem.blendFunc(770, 771);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        if (!blendon) {
+            RenderSystem.disableBlend();
+        }
+        if (!blendon) {
+            RenderSystem.disableDepthTest();
+        }
+
     }
 
     public static void drawTag(GuiGraphics pGuiGraphics, int x, int y, Aspect aspect, float amt, int bonus, double z) {

@@ -1,12 +1,14 @@
 package arcana.common.world.aura;
 
 import arcana.Arcana;
+import arcana.api.capabilities.ModCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -32,13 +34,13 @@ public class AuraHandler {
     public static void addAuraWorld(ResourceKey<Level> dim) {
         if (!AuraHandler.auras.containsKey(dim)) {
             AuraHandler.auras.put(dim, new AuraWorld(dim));
-            Arcana.log.info("Creating aura cache for world {}", dim);
+            Arcana.log.info("Creating aura cache for level {}", dim);
         }
     }
 
     public static void removeAuraWorld(ResourceKey<Level> dim) {
         AuraHandler.auras.remove(dim);
-        Arcana.log.info("Removing aura cache for world {}", dim);
+        Arcana.log.info("Removing aura cache for level {}", dim);
     }
 
     public static void addAuraChunk(ResourceKey<Level> dim, LevelChunk chunk, short base, float vis, float flux) {
@@ -57,15 +59,25 @@ public class AuraHandler {
         }
     }
 
-    public static float getVis(Level world, BlockPos pos) {
-        AuraChunk ac = getAuraChunk(world.dimension(), pos.getX() >> 4, pos.getZ() >> 4);
+    public static float getVis(Level level, BlockPos pos) {
+        AuraChunk ac = getAuraChunk(level.dimension(), pos.getX() >> 4, pos.getZ() >> 4);
         return (ac != null) ? ac.getVis() : 0.0f;
     }
 
-    public static float drainVis(Level world, BlockPos pos, float amount, boolean simulate) {
+    public static float getFlux(Level level, BlockPos pos) {
+        AuraChunk ac = getAuraChunk(level.dimension(), pos.getX() >> 4, pos.getZ() >> 4);
+        return ac != null ? ac.getFlux() : 0.0F;
+    }
+
+    public static int getAuraBase(Level level, BlockPos pos) {
+        AuraChunk ac = getAuraChunk(level.dimension(), pos.getX() >> 4, pos.getZ() >> 4);
+        return ac != null ? ac.getBase() : 0;
+    }
+
+    public static float drainVis(Level level, BlockPos pos, float amount, boolean simulate) {
         boolean didit = false;
         try {
-            AuraChunk ac = getAuraChunk(world.dimension(), pos.getX() >> 4, pos.getZ() >> 4);
+            AuraChunk ac = getAuraChunk(level.dimension(), pos.getX() >> 4, pos.getZ() >> 4);
             if (amount > ac.getVis()) {
                 amount = ac.getVis();
             }
@@ -73,6 +85,42 @@ public class AuraHandler {
         } catch (Exception ignored) {
         }
         return didit ? amount : 0.0f;
+    }
+
+    public static float drainFlux(Level level, BlockPos pos, float amount, boolean simulate) {
+        boolean didit = false;
+
+        try {
+            AuraChunk ac = getAuraChunk(level.dimension(), pos.getX() >> 4, pos.getZ() >> 4);
+            if (amount > ac.getFlux()) {
+                amount = ac.getFlux();
+            }
+
+            didit = modifyFluxInChunk(ac, -amount, !simulate);
+        } catch (Exception ignored) {
+        }
+
+        return didit ? amount : 0.0F;
+    }
+
+    public static void addVis(Level level, BlockPos pos, float amount) {
+        if (amount >= 0.0F) {
+            try {
+                AuraChunk ac = getAuraChunk(level.dimension(), pos.getX() >> 4, pos.getZ() >> 4);
+                modifyVisInChunk(ac, amount, true);
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
+    public static void addFlux(Level level, BlockPos pos, float amount) {
+        if (amount >= 0.0F) {
+            try {
+                AuraChunk ac = getAuraChunk(level.dimension(), pos.getX() >> 4, pos.getZ() >> 4);
+                modifyFluxInChunk(ac, amount, true);
+            } catch (Exception ignored) {
+            }
+        }
     }
 
     public static boolean modifyVisInChunk(AuraChunk ac, float amount, boolean doit) {
@@ -83,6 +131,22 @@ public class AuraHandler {
             return true;
         }
         return false;
+    }
+
+    private static boolean modifyFluxInChunk(AuraChunk ac, float amount, boolean doit) {
+        if (ac != null) {
+            if (doit) {
+                ac.setFlux(Math.max(0.0F, ac.getFlux() + amount));
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean shouldPreserveAura(Level level, Player player, BlockPos pos) {
+        return (player == null || ModCapabilities.getKnowledge(player).isResearchComplete("AURAPRESERVE")) && (double)(getVis(level, pos) / (float)getAuraBase(level, pos)) < 0.1;
     }
 
     public static void generateAura(LevelChunk chunk, RandomSource rand) {

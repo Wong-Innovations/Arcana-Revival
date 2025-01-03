@@ -1,9 +1,13 @@
 package arcana.common.lib;
 
+import arcana.common.lib.network.fx.PacketFXPollute;
+import arcana.common.world.aura.AuraHandler;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
 import arcana.api.aspects.AspectList;
 import arcana.api.capabilities.IPlayerKnowledge;
@@ -60,6 +64,52 @@ public class InternalMethodHandler implements IInternalMethodHandler {
     @Override
     public boolean completeResearch(Player player, final String researchkey) {
         return researchkey != null && !player.level().isClientSide && ResearchManager.completeResearch(player, researchkey);
+    }
+
+    @Override
+    public float drainVis(Level level, BlockPos pos, float amount, boolean simulate) {
+        return AuraHandler.drainVis(level, pos, amount, simulate);
+    }
+
+    @Override
+    public float drainFlux(Level level, BlockPos pos, float amount, boolean simulate) {
+        return AuraHandler.drainFlux(level, pos, amount, simulate);
+    }
+
+    @Override
+    public void addVis(Level level, BlockPos pos, float amount) {
+        AuraHandler.addVis(level, pos, amount);
+    }
+
+    @Override
+    public void addFlux(Level level, BlockPos pos, float amount, boolean showEffect) {
+        if (!level.isClientSide()) {
+            AuraHandler.addFlux(level, pos, amount);
+            if (showEffect && amount > 0.0F) {
+                PacketHandler.INSTANCE.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), 32, level.dimension())), new PacketFXPollute(pos, amount));
+            }
+        }
+        AuraHandler.addFlux(level, pos, amount);
+    }
+
+    @Override
+    public float getVis(Level level, BlockPos pos) {
+        return AuraHandler.getVis(level, pos);
+    }
+
+    @Override
+    public float getFlux(Level level, BlockPos pos) {
+        return AuraHandler.getFlux(level, pos);
+    }
+
+    @Override
+    public int getAuraBase(Level level, BlockPos pos) {
+        return AuraHandler.getAuraBase(level, pos);
+    }
+
+    @Override
+    public boolean shouldPreserveAura(Level level, Player player, BlockPos pos) {
+        return AuraHandler.shouldPreserveAura(level, player, pos);
     }
 
     @Override

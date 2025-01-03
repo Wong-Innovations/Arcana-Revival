@@ -5,6 +5,7 @@ import arcana.api.aspects.Aspect;
 import arcana.common.blocks.basic.BlockStoneTC;
 import arcana.common.blocks.basic.BlockTable;
 import arcana.common.blocks.crafting.BlockArcaneWorkbench;
+import arcana.common.blocks.crafting.BlockCrucible;
 import arcana.common.blocks.crafting.BlockResearchTable;
 import arcana.common.blocks.world.ore.BlockCrystal;
 import arcana.common.blocks.world.ore.ShardType;
@@ -38,7 +39,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> tableWood = registerBlock("table_wood", () -> new BlockTable(BlockBehaviour.Properties.of().sound(SoundType.WOOD).destroyTime(2.0f)));
     public static final RegistryObject<Block> arcaneWorkbench = registerBlock("arcane_workbench", BlockArcaneWorkbench::new);
     public static final RegistryObject<Block> researchTable = registerBlock("research_table", () -> new BlockResearchTable(BlockBehaviour.Properties.of().sound(SoundType.WOOD).noOcclusion()));
-
+    public static final RegistryObject<Block> crucible = registerBlock("crucible", BlockCrucible::new);
 
 
     private static RegistryObject<Block> registerBlock(String name, Supplier<Block> supplier) {

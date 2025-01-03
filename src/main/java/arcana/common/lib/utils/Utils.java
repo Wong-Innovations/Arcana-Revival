@@ -7,10 +7,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Map;
 import java.util.Set;
@@ -79,6 +84,26 @@ public class Utils {
 
         map.put(" ", Ingredient.EMPTY);
         return map;
+    }
+
+    public static JsonObject serializeItemStack(ItemStack stack) {
+        JsonObject json = new JsonObject();
+
+        ResourceLocation itemId = ForgeRegistries.ITEMS.getKey(stack.getItem());
+        if (itemId != null) {
+            json.addProperty("item", itemId.toString());
+        }
+
+        json.addProperty("count", stack.getCount());
+
+        if (stack.hasTag()) {
+            CompoundTag tag = stack.getTag();
+            if (tag != null) {
+                json.addProperty("nbt", tag.toString());
+            }
+        }
+
+        return json;
     }
 
     public static NonNullList<Ingredient> dissolvePattern(String[] pPattern, Map<String, Ingredient> pKeys, int pPatternWidth, int pPatternHeight) {

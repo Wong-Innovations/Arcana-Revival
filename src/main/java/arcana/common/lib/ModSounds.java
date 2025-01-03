@@ -23,6 +23,8 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> scan = registerSoundEvent("scan");
     public static final RegistryObject<SoundEvent> dust = registerSoundEvent("dust");
     public static final RegistryObject<SoundEvent> whispers = registerSoundEvent("whispers");
+    public static final RegistryObject<SoundEvent> bubble = registerSoundEvent("bubble");
+    public static final RegistryObject<SoundEvent> spill = registerSoundEvent("spill");
 
     public static SoundType CRYSTAL = new ForgeSoundType(0.5f, 1.0f, ModSounds.crystal, ModSounds.crystal, ModSounds.crystal, ModSounds.crystal, ModSounds.crystal);
 

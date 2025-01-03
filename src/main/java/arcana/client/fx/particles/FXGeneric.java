@@ -33,6 +33,7 @@ public class FXGeneric extends TextureSheetParticle {
     float[] scaleFrames;
     float[] alphaKeys;
     float[] alphaFrames;
+    int[] finalFrames = null;
     float randomX;
     float randomY;
     float randomZ;
@@ -123,8 +124,8 @@ public class FXGeneric extends TextureSheetParticle {
         this.xd += this.windX;
         this.zd += this.windZ;
         if (this.onGround && this.friction != 1.0) {
-            this.xd *= (double) 0.7F;
-            this.zd *= (double) 0.7F;
+            this.xd *= 0.7F;
+            this.zd *= 0.7F;
         }
     }
 
@@ -170,6 +171,16 @@ public class FXGeneric extends TextureSheetParticle {
             float fs = this.age / (float) this.lifetime;
             this.setParticleTextureIndex((int) (this.startParticle + Math.min(this.numParticles * fs, (float) (this.numParticles - 1))));
         }
+
+        if (this.finalFrames != null && this.finalFrames.length > 0 && this.age > this.lifetime - this.finalFrames.length) {
+            int frame = this.lifetime - this.age;
+            if (frame < 0) {
+                frame = 0;
+            }
+
+            this.setParticleTextureIndex(this.finalFrames[frame]);
+        }
+
         this.alpha = ((this.alphaFrames.length <= 0) ? 0.0f : this.alphaFrames[Math.min(this.age, this.alphaFrames.length - 1)]);
         this.quadSize = ((this.scaleFrames.length <= 0) ? 0.0f : this.scaleFrames[Math.min(this.age, this.scaleFrames.length - 1)]);
 
@@ -287,6 +298,10 @@ public class FXGeneric extends TextureSheetParticle {
         this.setParticleTextureIndex(this.startParticle = startParticle);
     }
 
+    public void setParticle(int startParticle) {
+        this.setParticles(startParticle, 1, 1);
+    }
+
     public void setScale(final float... scale) {
         this.quadSize = scale[0];
         this.scaleKeys = scale;
@@ -305,6 +320,10 @@ public class FXGeneric extends TextureSheetParticle {
         this.randomX = x;
         this.randomY = y;
         this.randomZ = z;
+    }
+
+    public void setFinalFrames(int... frames) {
+        this.finalFrames = frames;
     }
 
     public void setAngles(float yaw, float pitch) {
@@ -327,5 +346,9 @@ public class FXGeneric extends TextureSheetParticle {
 
     public void setGridSize(int gridSize) {
         this.gridSize = gridSize;
+    }
+
+    public void setHasPhysics(boolean has) {
+        this.hasPhysics = has;
     }
 }

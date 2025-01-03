@@ -2,6 +2,7 @@ package arcana.common.blockentities;
 
 import arcana.Arcana;
 import arcana.common.blockentities.crafting.BlockEntityArcaneWorkbench;
+import arcana.common.blockentities.crafting.BlockEntityCrucible;
 import arcana.common.blockentities.crafting.BlockEntityResearchTable;
 import arcana.common.blocks.ModBlocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -18,6 +19,8 @@ public class ModBlockEntities {
             () -> BlockEntityType.Builder.of(BlockEntityArcaneWorkbench::new, ModBlocks.arcaneWorkbench.get()).build(null));
     public static final RegistryObject<BlockEntityType<BlockEntityResearchTable>> RESEARCH_TABLE_ENTITY = BLOCK_ENTITIES.register("research_table",
             () -> BlockEntityType.Builder.of(BlockEntityResearchTable::new, ModBlocks.researchTable.get()).build(null));
+    public static final RegistryObject<BlockEntityType<BlockEntityCrucible>> CRUCIBLE_ENTITY = BLOCK_ENTITIES.register("crucible",
+            () -> BlockEntityType.Builder.of(BlockEntityCrucible::new, ModBlocks.crucible.get()).build(null));
 
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

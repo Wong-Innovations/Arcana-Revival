@@ -1,5 +1,8 @@
 package arcana.common.lib.crafting;
 
+import arcana.api.capabilities.ModCapabilities;
+import arcana.api.crafting.CrucibleRecipe;
+import arcana.api.crafting.IResearchRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Player;
@@ -20,24 +23,35 @@ import arcana.api.internal.CommonInternals;
 import arcana.common.lib.utils.InventoryUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Optional;
 
 public class CraftingManager {
-    public static IArcaneRecipe findMatchingArcaneRecipe(CraftingContainer matrix, Player player) {
-        int var2 = 0;
-        ItemStack var3 = null;
-        ItemStack var4 = null;
-        for (int i = 0; i < 15; ++i) {
-            ItemStack var6 = matrix.getItem(i);
-            if (!var6.isEmpty()) {
-                if (var2 == 0) {
-                    var3 = var6;
+
+    public static CrucibleRecipe findMatchingCrucibleRecipe(Player player, AspectList aspects, ItemStack lastDrop) {
+        int highest = 0;
+        CrucibleRecipe out = null;
+
+        for (IResearchRecipe re : ArcanaApi.getCraftingRecipes().values()) {
+            if (re instanceof CrucibleRecipe recipe) {
+                ItemStack temp = lastDrop.copy();
+                temp.setCount(1);
+                if (player != null && ModCapabilities.knowsResearchStrict(player, recipe.getResearch()) && recipe.matches(aspects, temp)) {
+                    int result = recipe.getAspects().visSize();
+                    if (result > highest) {
+                        highest = result;
+                        out = recipe;
+                    }
                 }
-                if (var2 == 1) {
-                    var4 = var6;
-                }
-                ++var2;
             }
+        }
+
+        return out;
+    }
+
+    public static IArcaneRecipe findMatchingArcaneRecipe(CraftingContainer matrix, Player player) {
+        for (int i = 0; i < 15; ++i) {
+            matrix.getItem(i);
         }
         Optional<ShapedArcaneRecipe> optional = player.level().getRecipeManager().getRecipeFor(ShapedArcaneRecipe.Type.INSTANCE, matrix, player.level());
         return optional.orElse(null);

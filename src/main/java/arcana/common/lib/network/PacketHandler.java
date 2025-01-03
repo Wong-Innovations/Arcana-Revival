@@ -1,6 +1,7 @@
 package arcana.common.lib.network;
 
 import arcana.Arcana;
+import arcana.common.lib.network.fx.PacketFXPollute;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
@@ -33,5 +34,6 @@ public class PacketHandler {
         PacketHandler.INSTANCE.registerMessage(idx++, PacketWarpMessage.class, PacketWarpMessage::encode, PacketWarpMessage::decode, PacketWarpMessage::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         PacketHandler.INSTANCE.registerMessage(idx++, PacketSyncProgressToServer.class, PacketSyncProgressToServer::encode, PacketSyncProgressToServer::decode, PacketSyncProgressToServer::onMessage, Optional.of(NetworkDirection.PLAY_TO_SERVER));
         PacketHandler.INSTANCE.registerMessage(idx++, PacketFXBlockBamf.class, PacketFXBlockBamf::encode, PacketFXBlockBamf::decode, PacketFXBlockBamf::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+        PacketHandler.INSTANCE.registerMessage(idx++, PacketFXPollute.class, PacketFXPollute::encode, PacketFXPollute::decode, PacketFXPollute::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
     }
 }

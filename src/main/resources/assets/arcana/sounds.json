@@ -56,9 +56,12 @@
     ]
   },
   "whispers": {
-    "category": "master",
+    "category": "ambient",
     "sounds": [
-      "arcana:whispers"
+      {
+        "name": "arcana:whispers",
+        "stream": false
+      }
     ]
   },
   "scan": {
@@ -66,6 +69,24 @@
     "sounds": [
       {
         "name": "arcana:scan",
+        "stream": false
+      }
+    ]
+  },
+  "bubble": {
+    "category": "block",
+    "sounds": [
+      "arcana:bubble1",
+      "arcana:bubble2",
+      "arcana:bubble3",
+      "arcana:bubble4"
+    ]
+  },
+  "spill": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "arcana:spill",
         "stream": false
       }
     ]
