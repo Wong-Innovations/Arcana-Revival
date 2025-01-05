@@ -3,6 +3,7 @@ package arcana.common.lib.network;
 import arcana.Arcana;
 import arcana.common.lib.network.fx.PacketFXPollute;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
@@ -22,7 +23,7 @@ import java.util.Optional;
 public class PacketHandler {
     public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(new ResourceLocation(Arcana.MODID, "messages"), () -> "1.0", s -> true, s -> true);
 
-    public static void registerPackets() {
+    public static void registerPackets(final FMLCommonSetupEvent event) {
         int idx = 0;
         PacketHandler.INSTANCE.registerMessage(idx++, PacketKnowledgeGain.class, PacketKnowledgeGain::encode, PacketKnowledgeGain::decode, PacketKnowledgeGain::onMessage, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
         PacketHandler.INSTANCE.registerMessage(idx++, PacketStartTheoryToServer.class, PacketStartTheoryToServer::encode, PacketStartTheoryToServer::decode, PacketStartTheoryToServer::onMessage, Optional.of(NetworkDirection.PLAY_TO_SERVER));

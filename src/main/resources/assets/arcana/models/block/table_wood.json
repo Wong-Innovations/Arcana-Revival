@@ -1,7 +1,7 @@
 {
   "textures": {
     "particle": "arcana:block/table_wood_top",
-    "top": "arcana:block/table_wood_top",
+    "top": "arcana:block/base_wood_grain",
     "side": "arcana:block/table_wood_side",
     "bottom": "arcana:block/base_wood_grain"
   },

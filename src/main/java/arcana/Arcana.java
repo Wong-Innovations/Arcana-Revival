@@ -8,6 +8,7 @@ import arcana.common.items.ModItems;
 import arcana.common.lib.ModCreativeModeTabs;
 import arcana.common.lib.ModSounds;
 import arcana.common.entities.ModEntityTypes;
+import arcana.common.lib.network.PacketHandler;
 import arcana.common.world.ModFeatures;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -42,8 +43,8 @@ public class Arcana {
         ModMenuTypes.register(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
         ModFeatures.register(modEventBus);
-//        ModConfiguredFeatures.register(modEventBus);
-//        ModPlacedFeatures.register(modEventBus);
+
+        modEventBus.addListener(PacketHandler::registerPackets);
 
         modEventBus.addListener(Arcana.proxy::preInit);
         modEventBus.addListener(Arcana.proxy::init);

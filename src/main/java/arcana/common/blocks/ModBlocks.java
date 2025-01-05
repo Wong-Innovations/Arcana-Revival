@@ -10,11 +10,15 @@ import arcana.common.blocks.crafting.BlockResearchTable;
 import arcana.common.blocks.world.ore.BlockCrystal;
 import arcana.common.blocks.world.ore.ShardType;
 import arcana.common.items.ModItems;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -40,7 +44,11 @@ public class ModBlocks {
     public static final RegistryObject<Block> arcaneWorkbench = registerBlock("arcane_workbench", BlockArcaneWorkbench::new);
     public static final RegistryObject<Block> researchTable = registerBlock("research_table", () -> new BlockResearchTable(BlockBehaviour.Properties.of().sound(SoundType.WOOD).noOcclusion()));
     public static final RegistryObject<Block> crucible = registerBlock("crucible", BlockCrucible::new);
-
+    public static final RegistryObject<Block> bratusLog = registerBlock("bratus_log", () -> log(MapColor.COLOR_PURPLE, MapColor.PODZOL));
+    public static final RegistryObject<Block> bratusWood = registerBlock("bratus_wood", () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava()));
+    public static final RegistryObject<Block> strippedBratusLog = registerBlock("stripped_bratus_log", () -> log(MapColor.COLOR_PURPLE, MapColor.COLOR_PURPLE));
+    public static final RegistryObject<Block> strippedBratusWood = registerBlock("stripped_bratus_wood", () -> log(MapColor.COLOR_PURPLE, MapColor.COLOR_PURPLE));
+    public static final RegistryObject<Block> bratusPlanks = registerBlock("bratus_planks", () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).instrument(NoteBlockInstrument.BASS).strength(2.0F, 3.0F).sound(SoundType.WOOD).ignitedByLava()));
 
     private static RegistryObject<Block> registerBlock(String name, Supplier<Block> supplier) {
         RegistryObject<Block> toReturn = BLOCKS.register(name, supplier);
@@ -62,5 +70,9 @@ public class ModBlocks {
         ShardType.ORDER.setOre(crystalOrder);
         ShardType.ENTROPY.setOre(crystalEntropy);
         ShardType.FLUX.setOre(crystalTaint);
+    }
+
+    private static Block log(MapColor top, MapColor side) {
+        return new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor((direction) -> direction.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? top : side).instrument(NoteBlockInstrument.BASS).strength(2.0F).sound(SoundType.WOOD).ignitedByLava());
     }
 }
