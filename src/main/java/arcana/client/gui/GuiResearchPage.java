@@ -695,7 +695,8 @@ public class GuiResearchPage extends Screen {
                         poseStack.pushPose();
                         poseStack.translate(x + 2, y + 2 + count % 5 * 40, 0.0);
                         poseStack.scale(1.5f, 1.5f, 1.5f);
-                        UtilsFX.drawTag(pGuiGraphics, 0, 0, aspect, 0.0f, 0, poseStack.last().pose().m32());
+//                        UtilsFX.drawTag(pGuiGraphics, 0, 0, aspect, 0.0f, 0, poseStack.last().pose().m32());
+                        UtilsFX.renderAspect(pGuiGraphics, aspect, 0, 0);
                         poseStack.popPose();
                         poseStack.pushPose();
                         poseStack.translate(x + 16, y + 29 + count % 5 * 40, 0.0);
@@ -709,7 +710,8 @@ public class GuiResearchPage extends Screen {
                             poseStack.translate(x + 60, y + 4 + count % 5 * 40, 0.0);
                             poseStack.scale(1.25f, 1.25f, 1.25f);
                             if (playerKnowledge.isResearchKnown("!" + aspect.getComponents()[0].getTag().toLowerCase())) {
-                                UtilsFX.drawTag(pGuiGraphics, 0, 0, aspect.getComponents()[0], 0.0f, 0, poseStack.last().pose().m32());
+//                                UtilsFX.drawTag(pGuiGraphics, 0, 0, aspect.getComponents()[0], 0.0f, 0, poseStack.last().pose().m32());
+                                UtilsFX.renderAspect(pGuiGraphics, aspect.getComponents()[0], 0, 0);
                             } else {
                                 RenderSystem.setShaderTexture(0, dummyResearch);
                                 RenderSystem.setShaderColor(0.8f, 0.8f, 0.8f, 1.0f);
@@ -721,7 +723,8 @@ public class GuiResearchPage extends Screen {
                             poseStack.translate(x + 102, y + 4 + count % 5 * 40, 0.0);
                             poseStack.scale(1.25f, 1.25f, 1.25f);
                             if (playerKnowledge.isResearchKnown("!" + aspect.getComponents()[1].getTag().toLowerCase())) {
-                                UtilsFX.drawTag(pGuiGraphics, 0, 0, aspect.getComponents()[1], 0.0f, 0, poseStack.last().pose().m32());
+//                                UtilsFX.drawTag(pGuiGraphics, 0, 0, aspect.getComponents()[1], 0.0f, 0, poseStack.last().pose().m32());
+                                UtilsFX.renderAspect(pGuiGraphics, aspect.getComponents()[1], 0, 0);
                             } else {
                                 RenderSystem.setShaderTexture(0, dummyResearch);
                                 RenderSystem.setShaderColor(0.8f, 0.8f, 0.8f, 1.0f);

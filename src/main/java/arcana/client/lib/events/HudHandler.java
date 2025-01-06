@@ -1,12 +1,16 @@
 package arcana.client.lib.events;
 
 import arcana.Arcana;
+import arcana.api.aspects.Aspect;
+import arcana.api.aspects.AspectList;
+import arcana.common.lib.crafting.CraftingManager;
 import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -19,6 +23,7 @@ import arcana.api.research.ResearchCategory;
 import arcana.client.lib.UtilsFX;
 import arcana.common.items.tools.ItemThaumometer;
 import arcana.common.world.aura.AuraChunk;
+import org.lwjgl.opengl.GL11;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -124,6 +129,31 @@ public class HudHandler {
         poseStack.popPose();
 
         poseStack.popPose();
+    }
+
+    public void renderAspectsInGui(GuiGraphics guiGraphics, ItemStack stack, int sd, int sx, int sy) {
+        AspectList tags = CraftingManager.getObjectTags(stack);
+        if (tags != null) {
+            PoseStack poseStack = guiGraphics.pose();
+            poseStack.pushPose();
+            int x;
+            int y;
+            int index = 0;
+            if (tags.size() > 0) {
+                Aspect[] var11 = tags.getAspectsSortedByAmount();
+
+                for (Aspect tag : var11) {
+                    if (tag != null) {
+                        x = sx + index * 18;
+                        y = sy + sd - 16;
+                        UtilsFX.drawColoredTag(guiGraphics, x, y, tag, (float) tags.getAmount(tag), 0, guiGraphics.pose().last().pose().m32());
+                        ++index;
+                    }
+                }
+            }
+
+            poseStack.popPose();
+        }
     }
 
     public static class KnowledgeGainTracker {

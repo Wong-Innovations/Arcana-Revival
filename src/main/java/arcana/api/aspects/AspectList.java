@@ -60,6 +60,35 @@ public class AspectList implements Serializable {
         }
     }
 
+    public Aspect[] getAspectsSortedByAmount() {
+        try {
+            Aspect[] out = this.aspects.keySet().toArray(new Aspect[0]);
+            boolean change;
+
+            do {
+                change = false;
+
+                for(int a = 0; a < out.length - 1; ++a) {
+                    int e1 = this.getAmount(out[a]);
+                    int e2 = this.getAmount(out[a + 1]);
+                    if (e1 > 0 && e2 > 0 && e2 > e1) {
+                        Aspect ea = out[a];
+                        Aspect eb = out[a + 1];
+                        out[a] = eb;
+                        out[a + 1] = ea;
+                        change = true;
+                        break;
+                    }
+                }
+            } while(change);
+
+            return out;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return this.getAspects();
+        }
+    }
+
     public int getAmount(final Aspect key) {
         return (this.aspects.get(key) == null) ? 0 : this.aspects.get(key);
     }

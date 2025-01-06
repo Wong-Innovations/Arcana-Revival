@@ -1,7 +1,6 @@
 package arcana.client.lib;
 
 
-import arcana.Arcana;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.platform.GlConst;
 import com.mojang.blaze3d.platform.Window;
@@ -17,7 +16,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.IForgeGuiGraphics;
 import arcana.api.aspects.Aspect;
@@ -28,7 +26,6 @@ import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -350,6 +347,85 @@ public class UtilsFX {
         RenderSystem.blendFunc(GlConst.GL_SRC_ALPHA, GlConst.GL_ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         poseStack.popPose();
+    }
+
+    public static void drawColoredTag(GuiGraphics pGuiGraphics, double x, double y, Aspect aspect, float amount, int bonus, double z) {
+        drawColoredTag(pGuiGraphics, x, y, aspect, amount, bonus, z, GlConst.GL_ONE_MINUS_SRC_ALPHA, 1.0F);
+    }
+
+    public static void drawColoredTag(GuiGraphics pGuiGraphics, double x, double y, Aspect aspect, float amount, int bonus, double z, int blend, float alpha) {
+        PoseStack poseStack = pGuiGraphics.pose();
+        if (aspect == null) {
+            return;
+        }
+        Minecraft mc = Minecraft.getInstance();
+        poseStack.pushPose();
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GlConst.GL_SRC_ALPHA, blend);
+
+        poseStack.pushPose();
+        RenderSystem.setShaderTexture(0, aspect.getImage());
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, alpha);
+        pGuiGraphics.blit(aspect.getImage(), 0, 0, 0, 0, 16, 16, 16, 16);
+        poseStack.popPose();
+
+        if (amount > 0.0f) {
+            poseStack.pushPose();
+            float q = 0.5f;
+            if (!ModConfig.CONFIG_GRAPHICS.largeTagText.get()) {
+                poseStack.scale(0.5f, 0.5f, 0.5f);
+                q = 1.0f;
+            }
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+            String am = UtilsFX.myFormatter.format(amount);
+            int sw = mc.font.width(am);
+            for (Direction e : Direction.Plane.HORIZONTAL) {
+                pGuiGraphics.drawString(mc.font, am, (32 - sw + (int) x * 2) * q + e.getStepX(), (32 - mc.font.lineHeight + (int) y * 2) * q + e.getStepZ(), 0, false);
+            }
+            pGuiGraphics.drawString(mc.font, am, (32 - sw + (int) x * 2) * q, (32 - mc.font.lineHeight + (int) y * 2) * q, 0XFFFFFF, false);
+            poseStack.popPose();
+        }
+        if (bonus > 0) {
+            poseStack.pushPose();
+            RenderSystem.setShaderTexture(0, ParticleEngine.particleTexture);
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+            int px = 16 * (mc.player.tickCount % 16);
+            drawTexturedQuad(poseStack, (float) ((int) x - 4), (float) ((int) y - 4), (float) px, 80.0f, 16.0f, 16.0f, z);
+            if (bonus > 1) {
+                float q2 = 0.5f;
+                if (!ModConfig.CONFIG_GRAPHICS.largeTagText.get()) {
+                    poseStack.scale(0.5f, 0.5f, 0.5f);
+                    q2 = 1.0f;
+                }
+                String am2 = "" + bonus;
+                int sw2 = mc.font.width(am2) / 2;
+                poseStack.translate(0.0, 0.0, -1.0);
+                pGuiGraphics.drawString(mc.font, am2, (8 - sw2 + (int) x * 2) * q2, (15 - mc.font.lineHeight + (int) y * 2) * q2, 0XFFFFFF, true);
+            }
+            poseStack.popPose();
+        }
+        RenderSystem.blendFunc(GlConst.GL_SRC_ALPHA, GlConst.GL_ONE_MINUS_SRC_ALPHA);
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        poseStack.popPose();
+    }
+
+    public static void renderAspect(GuiGraphics pGuiGraphics, Aspect aspect, int x, int y){
+        pGuiGraphics.blit(aspect.getImage(), x, y, 1, 0, 0, 16, 16, 16, 16);
+    }
+
+    public static void renderAspectWithAmount(GuiGraphics pGuiGraphics, Aspect aspect, float amount, int x, int y){
+        renderAspectWithAmount(pGuiGraphics, aspect, amount, x, y, aspect.getColor());
+    }
+
+    public static void renderAspectWithAmount(GuiGraphics pGuiGraphics, Aspect aspect, float amount, int x, int y, int color){
+        Minecraft mc = Minecraft.getInstance();
+        PoseStack poseStack = pGuiGraphics.pose();
+        // render aspect
+        renderAspect(pGuiGraphics, aspect, x, y);
+        // render amount, if there is a fractional part, round it
+        String s = (amount % 1 > 0.1) ? String.format("%.1f", amount) : String.format("%.0f", amount);
+        poseStack.translate(0, 0, 200.0F);
+        pGuiGraphics.drawString(mc.font, s, x + 19 - mc.font.width(s), y + 10, 0xFFFFFFFF, true);
     }
 
     public static void drawGradientRect(Matrix4f pMatrix, BufferBuilder pBuilder, int startX, int startY, int endX, int endY, int startColor, int endColor) {
