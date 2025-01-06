@@ -12,7 +12,8 @@ public class ModCommands {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralArgumentBuilder<CommandSourceStack> root = Commands.literal("arcana")
                 .requires(cs -> cs.hasPermission(0))
-                .then(ResearchCommand.register());
+                .then(ResearchCommand.registerLearn())
+                .then(ResearchCommand.registerLearnAll());
 
         LiteralCommandNode<CommandSourceStack> arcanaRoot = dispatcher.register(root);
 

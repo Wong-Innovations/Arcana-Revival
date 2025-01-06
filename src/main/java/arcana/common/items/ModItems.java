@@ -3,6 +3,7 @@ package arcana.common.items;
 import arcana.Arcana;
 import arcana.common.items.consumables.ItemPhial;
 import arcana.common.items.curios.ItemCelestialNotes;
+import arcana.common.items.curios.ItemCheatersThaumonomicon;
 import arcana.common.items.curios.ItemThaumonomicon;
 import arcana.common.items.resources.ItemCrystalEssence;
 import arcana.common.items.resources.ItemMagicDust;
@@ -25,6 +26,7 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Arcana.MODID);
 
     public static final RegistryObject<Item> thaumonomicon = ITEMS.register("thaumonomicon", ItemThaumonomicon::new);
+    public static final RegistryObject<Item> cheatersThaumonomicon = ITEMS.register("cheaters_thaumonomicon", ItemCheatersThaumonomicon::new);
     public static final RegistryObject<Item> celestialNotesSun = ITEMS.register("celestial_notes_sun", ItemCelestialNotes::new);
     public static final RegistryObject<Item> celestialNotesStars1 = ITEMS.register("celestial_notes_stars_1", ItemCelestialNotes::new);
     public static final RegistryObject<Item> celestialNotesStars2 = ITEMS.register("celestial_notes_stars_2", ItemCelestialNotes::new);

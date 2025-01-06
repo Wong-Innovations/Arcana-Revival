@@ -1,5 +1,14 @@
 package arcana.common.items.curios;
 
+import arcana.api.capabilities.ModCapabilities;
+import arcana.api.research.ResearchCategories;
+import arcana.api.research.ResearchCategory;
+import arcana.api.research.ResearchEntry;
+import arcana.client.gui.GuiResearchBrowser;
+import arcana.common.commands.ResearchCommand;
+import arcana.common.items.ItemBase;
+import arcana.common.lib.ModSounds;
+import arcana.common.lib.research.ResearchManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -11,25 +20,17 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.DistExecutor;
-import arcana.api.capabilities.ModCapabilities;
-import arcana.api.research.ResearchCategories;
-import arcana.api.research.ResearchCategory;
-import arcana.api.research.ResearchEntry;
-import arcana.client.gui.GuiResearchBrowser;
-import arcana.common.items.ItemBase;
-import arcana.common.lib.ModSounds;
-import arcana.common.lib.research.ResearchManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class ItemThaumonomicon extends ItemBase {
+public class ItemCheatersThaumonomicon extends ItemThaumonomicon {
 
-    public ItemThaumonomicon() {
-        this(new Properties());
+    public ItemCheatersThaumonomicon() {
+        super();
     }
 
-    public ItemThaumonomicon(Properties pProperties) {
+    public ItemCheatersThaumonomicon(Properties pProperties) {
         super(pProperties.stacksTo(1));
     }
 
@@ -40,13 +41,7 @@ public class ItemThaumonomicon extends ItemBase {
             for (ResearchCategory cat : rc) {
                 Collection<ResearchEntry> rl = cat.research.values();
                 for (ResearchEntry ri : rl) {
-                    if (ModCapabilities.knowsResearch(player, ri.getKey()) && ri.getSiblings() != null) {
-                        for (String sib : ri.getSiblings()) {
-                            if (!ModCapabilities.knowsResearch(player, sib)) {
-                                ResearchManager.completeResearch((ServerPlayer) player, sib);
-                            }
-                        }
-                    }
+                    ResearchCommand.giveRecursiveResearch((ServerPlayer) player, ri.getKey());
                 }
             }
             ModCapabilities.getKnowledge(player).sync((ServerPlayer) player);
@@ -65,6 +60,6 @@ public class ItemThaumonomicon extends ItemBase {
 
     @Override
     public @NotNull Rarity getRarity(@NotNull ItemStack itemstack) {
-        return Rarity.UNCOMMON;
+        return Rarity.EPIC;
     }
 }
