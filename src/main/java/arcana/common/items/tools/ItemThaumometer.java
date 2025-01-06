@@ -88,7 +88,7 @@ public class ItemThaumometer extends ItemBase {
                 ResearchManager.startResearchWithPopup(player, "FLUX");
                 player.sendSystemMessage(Component.translatable("research.FLUX.warn").withStyle(ChatFormatting.DARK_PURPLE), true);
             }
-            PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new PacketAuraToClient(ac));
+            PacketHandler.sendToPlayer(player, new PacketAuraToClient(ac));
         }
     }
 

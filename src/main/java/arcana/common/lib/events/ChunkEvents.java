@@ -20,7 +20,7 @@ public class ChunkEvents {
             ResourceKey<Level> dim = level.dimension();
             ChunkPos loc = chunk.getPos();
             CompoundTag nbt = new CompoundTag();
-            event.getData().put("Thaumcraft", nbt);
+            event.getData().put("Arcana", nbt);
             AuraChunk ac = AuraHandler.getAuraChunk(dim, loc.x, loc.z);
             if (ac != null) {
                 nbt.putShort("base", ac.getBase());
@@ -39,8 +39,8 @@ public class ChunkEvents {
             ResourceKey<Level> dim = level.dimension();
             ChunkPos loc = event.getChunk().getPos();
 
-            if (event.getData().getCompound("Thaumcraft").contains("base")) {
-                CompoundTag nbt = event.getData().getCompound("Thaumcraft");
+            if (event.getData().getCompound("Arcana").contains("base")) {
+                CompoundTag nbt = event.getData().getCompound("Arcana");
                 short base = nbt.getShort("base");
                 float flux = nbt.getFloat("flux");
                 float vis = nbt.getFloat("vis");

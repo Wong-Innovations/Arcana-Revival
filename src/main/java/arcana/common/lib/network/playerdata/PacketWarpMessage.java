@@ -45,6 +45,7 @@ public class PacketWarpMessage {
         if (message.data != 0) {
             ctx.get().enqueueWork(() -> {
                 processMessage(message);
+                ctx.get().setPacketHandled(true);
             });
         }
     }

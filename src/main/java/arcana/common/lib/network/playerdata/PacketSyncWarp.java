@@ -43,6 +43,7 @@ public class PacketSyncWarp {
             Player player = Minecraft.getInstance().player;
             IPlayerWarp pk = ModCapabilities.getWarp(player);
             pk.deserializeNBT(message.data);
+            ctx.get().setPacketHandled(true);
         });
     }
 }

@@ -1,6 +1,7 @@
 package arcana.common.lib.events;
 
 import arcana.Arcana;
+import arcana.common.commands.ModCommands;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
@@ -9,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
@@ -86,7 +88,7 @@ public class ServerEvents {
                         }
                     }
                     if (vs.fx) {
-                        PacketHandler.INSTANCE.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p((double)vs.pos.getX(), (double)vs.pos.getY(), (double)vs.pos.getZ(), 32.0, world.dimension())), new PacketFXBlockBamf(vs.pos, vs.color, true, vs.fancy, null));
+                        PacketHandler.sendToPlayersNear(vs.pos.getX(), vs.pos.getY(), vs.pos.getZ(), 32.0, world.dimension(), new PacketFXBlockBamf(vs.pos, vs.color, true, vs.fancy, null));
                     }
                 }
             }

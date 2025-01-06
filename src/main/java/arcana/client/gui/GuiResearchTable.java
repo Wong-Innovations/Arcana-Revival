@@ -69,7 +69,7 @@ public class GuiResearchTable extends AbstractContainerScreen<ContainerResearchT
         this.selectedAids = new HashSet<>();
         this.buttonCreate = new GuiImageButton(leftPos + 128, topPos + 22, 49, 11, Component.translatable("button.create.theory"), Supplier::get, txBase, 37, 66, 51, 13, 0x88FFAA, (b) -> {
             playButtonClick();
-            PacketHandler.INSTANCE.sendToServer(new PacketStartTheoryToServer(table.getBlockPos(), selectedAids));
+            PacketHandler.sendToServer(new PacketStartTheoryToServer(table.getBlockPos(), selectedAids));
         });
         this.buttonComplete = new GuiImageButton(leftPos + 191, topPos + 96, 49, 11, Component.translatable("button.complete.theory"), Supplier::get, txBase, 37, 66, 51, 13, 0x88FFAA, (b) -> {
             playButtonClick();

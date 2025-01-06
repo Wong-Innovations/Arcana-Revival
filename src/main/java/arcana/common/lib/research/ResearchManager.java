@@ -36,7 +36,7 @@ public class ResearchManager {
     public static boolean noFlags = false;
     public static LinkedHashSet<Integer> craftingReferences = new LinkedHashSet<>();
 
-    public static boolean addKnowledge(Player player, IPlayerKnowledge.EnumKnowledgeType type, ResearchCategory category, int amount) {
+    public static boolean addKnowledge(ServerPlayer player, IPlayerKnowledge.EnumKnowledgeType type, ResearchCategory category, int amount) {
         IPlayerKnowledge knowledge = ModCapabilities.getKnowledge(player);
         if (!type.hasFields()) {
             category = null;
@@ -49,14 +49,14 @@ public class ResearchManager {
         int kr = knowledge.getKnowledge(type, category) - kp;
         if (amount > 0) {
             for (int a = 0; a < kr; ++a) {
-                PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new PacketKnowledgeGain((byte) type.ordinal(), (category == null) ? null : category.key));
+                PacketHandler.sendToPlayer(player, new PacketKnowledgeGain((byte) type.ordinal(), (category == null) ? null : category.key));
             }
         }
         ResearchManager.syncList.put(player.getName().getString(), true);
         return true;
     }
 
-    public static boolean completeResearch(Player player, String researchkey, boolean sync) {
+    public static boolean completeResearch(ServerPlayer player, String researchkey, boolean sync) {
         boolean b = false;
         while (progressResearch(player, researchkey, sync)) {
             b = true;
@@ -64,7 +64,7 @@ public class ResearchManager {
         return b;
     }
 
-    public static boolean completeResearch(Player player, String researchkey) {
+    public static boolean completeResearch(ServerPlayer player, String researchkey) {
         boolean b = false;
         while (progressResearch(player, researchkey, true)) {
             b = true;
@@ -72,7 +72,7 @@ public class ResearchManager {
         return b;
     }
 
-    public static boolean startResearchWithPopup(Player player, String researchkey) {
+    public static boolean startResearchWithPopup(ServerPlayer player, String researchkey) {
         boolean b = progressResearch(player, researchkey, true);
         if (b) {
             IPlayerKnowledge knowledge = ModCapabilities.getKnowledge(player);
@@ -82,11 +82,11 @@ public class ResearchManager {
         return b;
     }
 
-    public static boolean progressResearch(Player player, String researchkey) {
+    public static boolean progressResearch(ServerPlayer player, String researchkey) {
         return progressResearch(player, researchkey, true);
     }
 
-    public static boolean progressResearch(Player player, String researchkey, boolean sync) {
+    public static boolean progressResearch(ServerPlayer player, String researchkey, boolean sync) {
         IPlayerKnowledge knowledge = ModCapabilities.getKnowledge(player);
         if (knowledge.isResearchComplete(researchkey) || !doesPlayerHaveRequisites(player, researchkey)) {
             return false;

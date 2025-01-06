@@ -40,6 +40,7 @@ public class PacketAuraToClient {
     public static void onMessage(PacketAuraToClient message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             HudHandler.currentAura = new AuraChunk(null, message.base, message.vis, message.flux);
+            ctx.get().setPacketHandled(true);
         });
     }
 }

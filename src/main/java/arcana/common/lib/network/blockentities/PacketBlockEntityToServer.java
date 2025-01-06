@@ -48,6 +48,7 @@ public class PacketBlockEntityToServer {
                     ((BlockEntityArcana) te).messageFromClient((message.nbt == null) ? new CompoundTag() : message.nbt, ctx.get().getSender());
                 }
             }
+            ctx.get().setPacketHandled(true);
         });
     }
 }

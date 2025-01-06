@@ -98,6 +98,7 @@ public class PacketFXBlockBamf {
             } else {
                 FXDispatcher.INSTANCE.drawBamf(message.x, message.y, message.z, Utils.getBit(message.flags, 0), Utils.getBit(message.flags, 1), side);
             }
+            ctx.get().setPacketHandled(true);
         });
     }
 }

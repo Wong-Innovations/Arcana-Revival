@@ -23,12 +23,12 @@ import arcana.common.lib.research.ResearchManager;
 public class InternalMethodHandler implements IInternalMethodHandler {
     @Override
     public boolean addKnowledge(Player player, IPlayerKnowledge.EnumKnowledgeType type, ResearchCategory field, int amount) {
-        return amount != 0 && !player.level().isClientSide && ResearchManager.addKnowledge(player, type, field, amount);
+        return amount != 0 && player instanceof ServerPlayer && ResearchManager.addKnowledge((ServerPlayer) player, type, field, amount);
     }
 
     @Override
     public void addWarpToPlayer(Player player, int amount, IPlayerWarp.EnumWarpType type) {
-        if (amount == 0 || player.level().isClientSide) {
+        if (amount == 0 || !(player instanceof ServerPlayer)) {
             return;
         }
         IPlayerWarp pw = ModCapabilities.getWarp(player);
@@ -38,13 +38,13 @@ public class InternalMethodHandler implements IInternalMethodHandler {
         }
         pw.add(type, amount);
         if (type == IPlayerWarp.EnumWarpType.PERMANENT) {
-            PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new PacketWarpMessage(player, (byte) 0, amount));
+            PacketHandler.sendToPlayer((ServerPlayer) player, new PacketWarpMessage(player, (byte) 0, amount));
         }
         if (type == IPlayerWarp.EnumWarpType.NORMAL) {
-            PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new PacketWarpMessage(player, (byte) 1, amount));
+            PacketHandler.sendToPlayer((ServerPlayer) player, new PacketWarpMessage(player, (byte) 1, amount));
         }
         if (type == IPlayerWarp.EnumWarpType.TEMPORARY) {
-            PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), new PacketWarpMessage(player, (byte) 2, amount));
+            PacketHandler.sendToPlayer((ServerPlayer) player, new PacketWarpMessage(player, (byte) 2, amount));
         }
         if (amount > 0) {
             pw.setCounter(pw.get(IPlayerWarp.EnumWarpType.TEMPORARY) + pw.get(IPlayerWarp.EnumWarpType.PERMANENT) + pw.get(IPlayerWarp.EnumWarpType.NORMAL));
@@ -58,12 +58,12 @@ public class InternalMethodHandler implements IInternalMethodHandler {
 
     @Override
     public boolean progressResearch(Player player, String researchkey) {
-        return researchkey != null && !player.level().isClientSide && ResearchManager.progressResearch(player, researchkey);
+        return researchkey != null && player instanceof ServerPlayer && ResearchManager.progressResearch((ServerPlayer) player, researchkey);
     }
 
     @Override
     public boolean completeResearch(Player player, final String researchkey) {
-        return researchkey != null && !player.level().isClientSide && ResearchManager.completeResearch(player, researchkey);
+        return researchkey != null && player instanceof ServerPlayer && ResearchManager.completeResearch((ServerPlayer) player, researchkey);
     }
 
     @Override
@@ -86,7 +86,7 @@ public class InternalMethodHandler implements IInternalMethodHandler {
         if (!level.isClientSide()) {
             AuraHandler.addFlux(level, pos, amount);
             if (showEffect && amount > 0.0F) {
-                PacketHandler.INSTANCE.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(pos.getX(), pos.getY(), pos.getZ(), 32, level.dimension())), new PacketFXPollute(pos, amount));
+                PacketHandler.sendToPlayersNear(pos.getX(), pos.getY(), pos.getZ(), 32, level.dimension(), new PacketFXPollute(pos, amount));
             }
         }
         AuraHandler.addFlux(level, pos, amount);

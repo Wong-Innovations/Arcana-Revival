@@ -26,15 +26,15 @@ public class BlockEntityArcana extends BlockEntity {
     public void sendMessageToClient(CompoundTag nbt, @Nullable ServerPlayer player) {
         if (player == null) {
             if (getLevel() != null) {
-                PacketHandler.INSTANCE.send(PacketDistributor.NEAR.with(PacketDistributor.TargetPoint.p(getBlockPos().getX() + 0.5, getBlockPos().getY(), getBlockPos().getZ(), 128.0, getLevel().dimension())), new PacketBlockEntityToClient(getBlockPos(), nbt));
+                PacketHandler.sendToPlayersNear(getBlockPos().getX() + 0.5, getBlockPos().getY(), getBlockPos().getZ(), 128.0, getLevel().dimension(), new PacketBlockEntityToClient(getBlockPos(), nbt));
             }
         } else {
-            PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new PacketBlockEntityToClient(getBlockPos(), nbt));
+            PacketHandler.sendToPlayer(player, new PacketBlockEntityToClient(getBlockPos(), nbt));
         }
     }
 
     public void sendMessageToServer(CompoundTag nbt) {
-        PacketHandler.INSTANCE.sendToServer(new PacketBlockEntityToServer(getBlockPos(), nbt));
+        PacketHandler.sendToServer(new PacketBlockEntityToServer(getBlockPos(), nbt));
     }
 
     public void messageFromServer(CompoundTag nbt) {

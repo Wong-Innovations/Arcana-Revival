@@ -35,7 +35,7 @@ public class ItemThaumonomicon extends ItemBase {
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level world, @NotNull Player player, @NotNull InteractionHand hand) {
-        if (!world.isClientSide) {
+        if (!world.isClientSide && player instanceof ServerPlayer) {
             Collection<ResearchCategory> rc = ResearchCategories.researchCategories.values();
             for (ResearchCategory cat : rc) {
                 Collection<ResearchEntry> rl = cat.research.values();
@@ -43,7 +43,7 @@ public class ItemThaumonomicon extends ItemBase {
                     if (ModCapabilities.knowsResearch(player, ri.getKey()) && ri.getSiblings() != null) {
                         for (String sib : ri.getSiblings()) {
                             if (!ModCapabilities.knowsResearch(player, sib)) {
-                                ResearchManager.completeResearch(player, sib);
+                                ResearchManager.completeResearch((ServerPlayer) player, sib);
                             }
                         }
                     }

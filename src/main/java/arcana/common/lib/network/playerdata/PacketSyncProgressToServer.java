@@ -1,6 +1,7 @@
 package arcana.common.lib.network.playerdata;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.Tags;
@@ -54,7 +55,7 @@ public class PacketSyncProgressToServer {
 
     public static void onMessage(PacketSyncProgressToServer message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
-            Player player = ctx.get().getSender();
+            ServerPlayer player = ctx.get().getSender();
             if (player != null && message.first != ModCapabilities.knowsResearch(player, message.key)) {
                 if (message.checks && !checkRequisites(player, message.key)) {
                     return;
@@ -64,10 +65,11 @@ public class PacketSyncProgressToServer {
                 }
                 ResearchManager.progressResearch(player, message.key);
             }
+            ctx.get().setPacketHandled(true);
         });
     }
 
-    private static boolean checkRequisites(Player player, String key) {
+    private static boolean checkRequisites(ServerPlayer player, String key) {
         ResearchEntry research = ResearchCategories.getResearch(key);
         if (research.getStages() != null) {
             int currentStage = ModCapabilities.getKnowledge(player).getResearchStage(key) - 1;

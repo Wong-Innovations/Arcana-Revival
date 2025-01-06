@@ -3,6 +3,7 @@ package arcana;
 import arcana.client.gui.ModMenuTypes;
 import arcana.common.blockentities.ModBlockEntities;
 import arcana.common.blocks.ModBlocks;
+import arcana.common.commands.ModCommands;
 import arcana.common.config.ModRecipes;
 import arcana.common.items.ModItems;
 import arcana.common.lib.ModCreativeModeTabs;

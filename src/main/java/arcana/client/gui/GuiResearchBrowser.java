@@ -719,17 +719,17 @@ public class GuiResearchBrowser extends Screen {
     public boolean mouseClicked(double mx, double my, int pButton) {
         if (!searching && this.currentHighlight != null && !ModCapabilities.knowsResearch(this.player, this.currentHighlight.getKey()) && this.canUnlockResearch(this.currentHighlight)) {
             this.updateResearch();
-            PacketHandler.INSTANCE.sendToServer(new PacketSyncProgressToServer(this.currentHighlight.getKey(), true));
+            PacketHandler.sendToServer(new PacketSyncProgressToServer(this.currentHighlight.getKey(), true));
             Minecraft.getInstance().setScreen(new GuiResearchPage(currentHighlight, null, guiMapX, guiMapY));
             this.popuptime = System.currentTimeMillis() + 3000L;
             this.popupmessage = Component.translatable("tc.research.popup", this.currentHighlight.getLocalizedName()).getString();
         } else if (currentHighlight != null && ModCapabilities.knowsResearch(player, currentHighlight.getKey())) {
             ModCapabilities.getKnowledge(player).clearResearchFlag(currentHighlight.getKey(), IPlayerKnowledge.EnumResearchFlag.RESEARCH);
             ModCapabilities.getKnowledge(player).clearResearchFlag(currentHighlight.getKey(), IPlayerKnowledge.EnumResearchFlag.PAGE);
-//            PacketHandler.INSTANCE.sendToServer(new PacketSyncResearchFlagsToServer(mc.player, currentHighlight.getKey()));
+//            PacketHandler.sendToServer(new PacketSyncResearchFlagsToServer(mc.player, currentHighlight.getKey()));
             int stage = ModCapabilities.getKnowledge(player).getResearchStage(currentHighlight.getKey());
             if (stage > 1 && stage >= currentHighlight.getStages().length) {
-                PacketHandler.INSTANCE.sendToServer(new PacketSyncProgressToServer(currentHighlight.getKey(), false, true, false));
+                PacketHandler.sendToServer(new PacketSyncProgressToServer(currentHighlight.getKey(), false, true, false));
             }
             Minecraft.getInstance().setScreen(new GuiResearchPage(currentHighlight, null, guiMapX, guiMapY));
         } else if (searching) {

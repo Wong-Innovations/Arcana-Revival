@@ -55,7 +55,7 @@ public class PlayerWarp {
 
         @Override
         public void sync(@Nonnull ServerPlayer player) {
-            PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new PacketSyncWarp(player));
+            PacketHandler.sendToPlayer(player, new PacketSyncWarp(player));
         }
 
         @Override

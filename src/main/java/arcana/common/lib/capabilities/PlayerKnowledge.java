@@ -180,7 +180,7 @@ public class PlayerKnowledge {
 
         @Override
         public void sync(@Nonnull ServerPlayer player) {
-            PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new PacketSyncKnowledge(player));
+            PacketHandler.sendToPlayer(player, new PacketSyncKnowledge(player));
         }
 
         @Override

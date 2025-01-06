@@ -926,7 +926,7 @@ public class GuiResearchPage extends Screen {
         double mx = pMouseX - hrx;
         double my = pMouseY - hry;
         if (GuiResearchPage.shownRecipe == null && !hold && hasAllRequisites && mx >= 0 && my >= 0 && mx < 64 && my < 12) {
-            PacketHandler.INSTANCE.sendToServer(new PacketSyncProgressToServer(research.getKey(), false, true, true));
+            PacketHandler.sendToServer(new PacketSyncProgressToServer(research.getKey(), false, true, true));
             Minecraft.getInstance().player.playSound(ModSounds.write.get(), 0.66f, 1.0f);
             lastCheck = 0L;
             lastStage = currentStage;

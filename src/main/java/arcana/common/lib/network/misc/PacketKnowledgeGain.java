@@ -46,6 +46,7 @@ public class PacketKnowledgeGain {
     public static void onMessage(PacketKnowledgeGain message, Supplier<NetworkEvent.Context> ctx) {
         ctx.get().enqueueWork(() -> {
             processMessage(message);
+            ctx.get().setPacketHandled(true);
         });
     }
 

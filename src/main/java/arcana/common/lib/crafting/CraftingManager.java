@@ -250,7 +250,7 @@ public class CraftingManager {
             CraftingContainer inv = new TransientCraftingContainer(new ContainerFake(), 3, 3);
             int index = 0;
             for (Ingredient is : nonNullList) {
-                if (is.getItems().length > 0) {
+                if (InventoryUtils.getMatchingStacks(is).length > 0) {
                     inv.setItem(index, InventoryUtils.getMatchingStacks(is)[0]);
                 }
                 ++index;

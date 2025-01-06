@@ -57,6 +57,7 @@ public class PacketFXPollute {
             for (int a = 0; a < Math.min(40, message.amount); ++a) {
                 FXDispatcher.INSTANCE.drawPollutionParticles(new BlockPos(message.x, message.y, message.z));
             }
+            ctx.get().setPacketHandled(true);
         });
     }
 }
