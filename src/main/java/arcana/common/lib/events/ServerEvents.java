@@ -32,6 +32,11 @@ public class ServerEvents {
     private static final HashMap<ResourceKey<Level>, LinkedBlockingQueue<RunnableEntry>> serverRunList = new HashMap<>();
 
     @SubscribeEvent
+    public static void registerCommands(RegisterCommandsEvent event) {
+        ModCommands.register(event.getDispatcher());
+    }
+
+    @SubscribeEvent
     public static void worldTick(TickEvent.LevelTickEvent event) {
         if (event.side == LogicalSide.CLIENT) {
             return;
