@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "supported=true": {
+      "model": "arcana:block/taint_scrubber_support"
+    },
+    "supported=false": {
+      "model": "arcana:block/taint_scrubber_mk1"
+    }
+  }
+}

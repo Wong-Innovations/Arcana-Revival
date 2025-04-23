@@ -1,0 +1,17 @@
+{
+  "variants": {
+    "fullytainted=false": [
+      {
+        "model": "arcana:tainted_rock"
+      }
+    ],
+    "fullytainted=true": [
+      {
+        "model": "arcana:tainted_rock"
+      }
+    ]
+  }
+}
+
+
+

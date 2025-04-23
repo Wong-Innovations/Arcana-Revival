@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "arcana:block/nodes/normal_node"
+    }
+  }
+}

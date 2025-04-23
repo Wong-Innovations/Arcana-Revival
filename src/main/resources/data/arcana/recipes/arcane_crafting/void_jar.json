@@ -1,0 +1,32 @@
+{
+  "type": "arcana:arcane_crafting_shaped",
+  "pattern": [
+    "GWG",
+    "GCG",
+    "GGG"
+  ],
+  "key": {
+    "W": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "G": {
+      "tag": "forge:glass_panes"
+    },
+    "C": {
+      "item": "arcana:vacuum_crystal"
+    }
+  },
+  "aspects": [
+    {
+      "aspect": "arcana:water",
+      "amount": 5
+    },
+    {
+      "aspect": "arcana:order",
+      "amount": 10
+    }
+  ],
+  "result": {
+    "item": "arcana:void_jar"
+  }
+}

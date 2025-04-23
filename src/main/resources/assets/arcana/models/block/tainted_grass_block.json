@@ -1,0 +1,9 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "top": "arcana:block/tainted_grass_block_top",
+    "side": "arcana:block/tainted_grass_block",
+    "front": "arcana:block/tainted_grass_block",
+    "bottom": "arcana:block/tainted_soil"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "arcana:arcane_crafting_shaped",
+  "pattern": [
+    "lll",
+    "lcl",
+    "pgp"
+  ],
+  "key": {
+    "g": {
+      "tag": "forge:ingots/gold"
+    },
+    "p": {
+      "item": "minecraft:glass_pane"
+    },
+    "l": {
+      "item": "minecraft:leather"
+    },
+    "c": {
+      "tag": "arcana:primal_crystals"
+    }
+  },
+  "aspects": [],
+  "result": {
+    "item": "arcana:goggles_of_revealing"
+  },
+  "research": [
+    "arcana:aspect_collection"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "type": "arcana:arcane_crafting_shaped",
+  "pattern": [
+    "GWG",
+    "G G",
+    "GGG"
+  ],
+  "key": {
+    "W": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "G": {
+      "item": "minecraft:iron_bars"
+    }
+  },
+  "aspects": [
+    {
+      "aspect": "arcana:water",
+      "amount": 5
+    },
+    {
+      "aspect": "arcana:order",
+      "amount": 10
+    }
+  ],
+  "result": {
+    "item": "arcana:secure_jar"
+  }
+}

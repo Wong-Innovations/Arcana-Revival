@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "fullytainted=false": [
+      {
+        "model": "arcana:tainted_path"
+      }
+    ],
+    "fullytainted=true": [
+      {
+        "model": "arcana:tainted_path"
+      }
+    ]
+  }
+}
+
+

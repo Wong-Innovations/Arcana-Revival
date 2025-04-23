@@ -1,0 +1,26 @@
+{
+  "type": "arcana:alchemy",
+  "in": {
+    "tag": "forge:ores/gold"
+  },
+  "out": {
+    "item": "arcana:purified_gold"
+  },
+  "aspects": [
+    {
+      "aspect": "order",
+      "amount": 4
+    },
+    {
+      "aspect": "chaos",
+      "amount": 2
+    },
+    {
+      "aspect": "crystal",
+      "amount": 1
+    }
+  ],
+  "research": [
+    "arcana:purification@4"
+  ]
+}

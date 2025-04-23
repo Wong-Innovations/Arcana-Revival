@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "arcana:block/eucalyptus_slab"
+    },
+    "type=top": {
+      "model": "arcana:block/eucalyptus_slab_top"
+    },
+    "type=double": {
+      "model": "arcana:block/eucalyptus_planks"
+    }
+  }
+}
