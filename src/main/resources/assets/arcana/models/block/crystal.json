@@ -1,6 +1,0 @@
-{
-  "loader": "arcana:crystal",
-  "textures": {
-    "all": "arcana:block/crystal"
-  }
-}

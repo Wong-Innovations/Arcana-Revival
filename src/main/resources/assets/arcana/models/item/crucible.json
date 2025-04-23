@@ -1,3 +1,6 @@
 {
-  "parent": "arcana:block/crucible"
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "arcana:item/crucible_item"
+  }
 }

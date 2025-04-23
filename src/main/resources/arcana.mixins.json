@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "package": "com.wonginnovations.arcana.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "arcana.refmap.json",
+  "mixins": [
+    "BiomeAccessor",
+    "BlockAccessor",
+    "BushBlockAccessor",
+    "ChunkMapAccessor",
+    "LivingEntityMixin",
+    "ModContainerAccessor"
+  ],
+  "client": [
+    "BiomeColorMixin",
+    "BlockClientMixin",
+    "BlockModelMixin",
+    "FontAccessor",
+    "HumanoidModelMixin",
+    "MinecraftClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

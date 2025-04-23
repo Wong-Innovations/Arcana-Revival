@@ -1,3 +1,6 @@
 {
-  "parent": "arcana:block/research_table"
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "arcana:item/research_table_item"
+  }
 }
