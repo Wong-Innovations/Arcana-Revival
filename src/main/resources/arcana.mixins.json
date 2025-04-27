@@ -17,7 +17,8 @@
     "BlockModelMixin",
     "FontAccessor",
     "HumanoidModelMixin",
-    "MinecraftClientMixin"
+    "MinecraftClientMixin",
+    "ParticleEngineAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

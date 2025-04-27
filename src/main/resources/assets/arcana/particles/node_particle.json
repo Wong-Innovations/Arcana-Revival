@@ -1,1 +1,5 @@
-{}
+{
+  "textures": [
+    "arcana:particle/nodes/normal_node.png"
+  ]
+}

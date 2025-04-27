@@ -28,6 +28,9 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.wonginnovations.arcana.Arcana.arcLoc;
 import static com.wonginnovations.arcana.aspects.AspectUtils.primalAspects;
@@ -38,7 +41,7 @@ import static com.wonginnovations.arcana.aspects.AspectUtils.primalAspects;
 public abstract class NodeType {
 	
 	// A diet registry, used for serialization and deserialization.
-	public static final BiMap<ResourceLocation, NodeType> TYPES = HashBiMap.create(6);
+	public static final BiMap<ResourceLocation, NodeType> TYPES = HashBiMap.create(7);
 	public static final Set<NodeType> SPECIAL_TYPES = new HashSet<>(5);
 	
 	public static final NodeType
@@ -163,22 +166,25 @@ public abstract class NodeType {
 	public static class NormalNodeType extends NodeType {
 		
 		public ResourceLocation texture(Level level, AuraView nodes, Node node) {
-			return arcLoc("block/nodes/normal_node");
+			return arcLoc("nodes/normal_node");
+//			return arcLoc("nodes/normal_node_" + (level.getGameTime() / 2) % textures().size());
 		}
 		
 		public Collection<ResourceLocation> textures() {
-			return Collections.singleton(arcLoc("block/nodes/normal_node"));
+			return List.of(
+					arcLoc("particle/nodes/normal_node")
+			);
 		}
 	}
 	
 	public static class BrightNodeType extends NodeType {
 		
 		public ResourceLocation texture(Level level, AuraView nodes, Node node) {
-			return arcLoc("block/nodes/bright_node");
+			return arcLoc("particle/nodes/bright_node");
 		}
 		
 		public Collection<ResourceLocation> textures() {
-			return Collections.singleton(arcLoc("block/nodes/brightest_node"));
+			return Collections.singleton(arcLoc("particle/nodes/brightest_node"));
 		}
 		
 		// Add 50% to all aspects
@@ -205,11 +211,11 @@ public abstract class NodeType {
 	public static class PaleNodeType extends NodeType{
 		
 		public ResourceLocation texture(Level level, AuraView nodes, Node node) {
-			return arcLoc("block/nodes/fading_node");
+			return arcLoc("particle/nodes/fading_node");
 		}
 		
 		public Collection<ResourceLocation> textures() {
-			return Collections.singleton(arcLoc("block/nodes/fading_node"));
+			return Collections.singleton(arcLoc("particle/nodes/fading_node"));
 		}
 		
 		// Remove 30% from all aspects
@@ -236,11 +242,11 @@ public abstract class NodeType {
 	public static class EldritchNodeType extends NodeType{
 		
 		public ResourceLocation texture(Level level, AuraView nodes, Node node) {
-			return arcLoc("block/nodes/eldritch_node");
+			return arcLoc("particle/nodes/eldritch_node");
 		}
 		
 		public Collection<ResourceLocation> textures() {
-			return Collections.singleton(arcLoc("block/nodes/eldritch_node"));
+			return Collections.singleton(arcLoc("particle/nodes/eldritch_node"));
 		}
 	}
 	
@@ -248,11 +254,11 @@ public abstract class NodeType {
 	public static class HungryNodeType extends NodeType {
 		
 		public ResourceLocation texture(Level level, AuraView nodes, Node node) {
-			return arcLoc("block/nodes/hungry_node");
+			return arcLoc("particle/nodes/hungry_node");
 		}
 		
 		public Collection<ResourceLocation> textures() {
-			return Collections.singleton(arcLoc("block/nodes/hungry_node"));
+			return Collections.singleton(arcLoc("particle/nodes/hungry_node"));
 		}
 		
 		public void tick(Level level, AuraView nodes, Node node) {
@@ -320,11 +326,11 @@ public abstract class NodeType {
 	public static class PureNodeType extends NodeType {
 
 		public ResourceLocation texture(Level level, AuraView nodes, Node node) {
-			return arcLoc("block/nodes/pure_node");
+			return arcLoc("particle/nodes/pure_node");
 		}
 
 		public Collection<ResourceLocation> textures() {
-			return Collections.singleton(arcLoc("block/nodes/pure_node"));
+			return Collections.singleton(arcLoc("particle/nodes/pure_node"));
 		}
 		
 		public boolean blocksTaint(Level level, AuraView nodes, Node node, BlockPos pos) {
@@ -335,11 +341,11 @@ public abstract class NodeType {
 	public static class TaintedNodeType extends NodeType {
 		
 		public ResourceLocation texture(Level level, AuraView nodes, Node node) {
-			return arcLoc("block/nodes/tainted_node");
+			return arcLoc("particle/nodes/tainted_node");
 		}
 		
 		public Collection<ResourceLocation> textures() {
-			return Collections.singleton(arcLoc("block/nodes/tainted_node"));
+			return Collections.singleton(arcLoc("particle/nodes/tainted_node"));
 		}
 		
 		public AspectHandler genBattery(BlockPos location, Level level, RandomSource random) {

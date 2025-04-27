@@ -8,6 +8,7 @@ import com.wonginnovations.arcana.client.event.*;
 import com.wonginnovations.arcana.client.gui.*;
 import com.wonginnovations.arcana.client.model.WandModel;
 import com.wonginnovations.arcana.client.render.particles.ArcanaParticles;
+import com.wonginnovations.arcana.client.render.particles.NodeParticle;
 import com.wonginnovations.arcana.client.research.BackgroundLayerRenderers;
 import com.wonginnovations.arcana.client.research.EntrySectionRenderer;
 import com.wonginnovations.arcana.client.research.PuzzleRenderer;
@@ -52,6 +53,7 @@ public class ClientProxy extends CommonProxy {
 		ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
 				() -> new ConfigScreenHandler.ConfigScreenFactory((mc, screen) -> new ConfigScreen(screen)));
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+//		bus.addListener(TextureStitchHandler::beforeTextureStitch);
 		bus.addListener(TextureStitchHandler::onTextureStitch);
 		bus.addListener(BakeEventHandler::onModelBake);
 		bus.addListener(ParticleFactoryEvent::onParticleFactoryRegister);

@@ -3,6 +3,9 @@ package com.wonginnovations.arcana.client.render.particles;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.wonginnovations.arcana.items.settings.GogglePriority;
+import com.wonginnovations.arcana.mixin.ParticleEngineAccessor;
+import com.wonginnovations.arcana.world.NodeType;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import com.wonginnovations.arcana.Arcana;
 import com.wonginnovations.arcana.aspects.Aspect;
@@ -18,12 +21,20 @@ import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.wonginnovations.arcana.client.gui.UiUtil.*;
 
@@ -31,19 +42,28 @@ import static com.wonginnovations.arcana.client.gui.UiUtil.*;
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 public class NodeParticle extends TextureSheetParticle {
-	
+
 	private Node node;
 	protected static final int time = 40;
-	
+	private final int totalFrames;
+	private static final Map<NodeType, Integer> startFrame = new HashMap<>();
+
+	static {
+		for (NodeType nt : NodeType.TYPES.values()) {
+			startFrame.put(nt, 0);
+		}
+	}
+
 	protected NodeParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite, @Nullable Node node) {
 		super(level, x, y, z);
 		this.node = node;
 		gravity = 0;
 		lifetime = 0;
 //		particleScale = .7f;
-		scale(.7f);
+		scale(1f);
 		hasPhysics = false;
 		setSprite(sprite);
+		totalFrames = sprite.contents().getOriginalImage().getHeight() / sprite.contents().height();
 	}
 
 	@Override
@@ -67,7 +87,7 @@ public class NodeParticle extends TextureSheetParticle {
 				gCol = green(blended) / 255f;
 				bCol = blue(blended) / 255f;
 			} catch (ArithmeticException arithmeticException) {
-                Arcana.LOGGER.error("{} at: [{}@{}@{}]", arithmeticException, x, y, z);
+				Arcana.LOGGER.error("{} at: [{}@{}@{}]", arithmeticException, x, y, z);
 			}
 		}
 		super.render(pBuffer, pRenderInfo, pPartialTicks);
@@ -78,7 +98,7 @@ public class NodeParticle extends TextureSheetParticle {
 		// fullbright
 		return 0xf000f0;
 	}
-	
+
 	public static final ParticleRenderType PASSTHROUGH_TERRAIN_SHEET = new ParticleRenderType() {
 		@Override
 		public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
@@ -86,7 +106,7 @@ public class NodeParticle extends TextureSheetParticle {
 			RenderSystem.defaultBlendFunc();
 			RenderSystem.depthMask(false);
 			RenderSystem.disableDepthTest();
-			textureManager.bindForSetup(InventoryMenu.BLOCK_ATLAS);
+			RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
 			bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 		}
 
@@ -94,20 +114,19 @@ public class NodeParticle extends TextureSheetParticle {
 		public void end(Tesselator tesselator) {
 			tesselator.end();
 			RenderSystem.enableDepthTest();
-			RenderSystem.depthMask(true);
 		}
-		
+
 		public String toString() {
 			return "arcana:PASSTHROUGH_TERRAIN_SHEET";
 		}
 	};
-	
+
 	@OnlyIn(Dist.CLIENT)
 	@ParametersAreNonnullByDefault
 	public static class Factory implements ParticleProvider<NodeParticleData> {
 		@Override
 		public Particle createParticle(NodeParticleData data, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-			return new NodeParticle(level, x, y, z, Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(data.nodeTexture), new ClientAuraView(level).getNodeByUuid(data.node).orElse(null));
+			return new NodeParticle(level, x, y, z, ((ParticleEngineAccessor) Minecraft.getInstance().particleEngine).getTextureAtlas().getSprite(data.nodeTexture), new ClientAuraView(level).getNodeByUuid(data.node).orElse(null));
 		}
 	}
 }

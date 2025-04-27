@@ -13,6 +13,7 @@ import com.wonginnovations.arcana.world.NodeType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -20,6 +21,14 @@ import javax.annotation.Nonnull;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class TextureStitchHandler {
+
+//	public static void beforeTextureStitch(RegisterSpriteSourceEvent event) {
+//		event.addSpriteSource((atlas, registry) -> {
+//			if (atlas.equals(TextureAtlas.LOCATION_PARTICLES)) {
+//				registry.add(new ResourceLocation("yourmod", "particle/your_node"));
+//			}
+//		});
+//	}
 	
 	@SuppressWarnings("deprecation")
 	public static void onTextureStitch(@Nonnull TextureStitchEvent.Post event) {
@@ -61,8 +70,11 @@ public class TextureStitchHandler {
 				for (ResourceLocation location : focus.getAllModelLocations())
 					event.getAtlas().getSprite(new ResourceLocation(location.getNamespace(), "models/wands/foci/" + location.getPath()));
 
+		} else if (event.getAtlas().location().equals(TextureAtlas.LOCATION_PARTICLES)) {
 			for (NodeType value : NodeType.TYPES.values()) {
-				event.getAtlas().getSprite(value.texture(null, null, null));
+				for (ResourceLocation rl : value.textures()) {
+					event.getAtlas().getSprite(rl);
+				}
 			}
 		}
 	}

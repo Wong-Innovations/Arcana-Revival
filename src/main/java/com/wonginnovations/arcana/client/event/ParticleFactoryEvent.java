@@ -14,6 +14,7 @@ public class ParticleFactoryEvent{
 		event.registerSpecial(ArcanaParticles.HUNGRY_NODE_BLOCK_PARTICLE.get(), new HungryNodeBlockParticle.Factory());
 		event.registerSpecial(ArcanaParticles.HUNGRY_NODE_DISC_PARTICLE.get(), new HungryNodeDiscParticle.Factory());
 
+//		event.registerSpriteSet(ArcanaParticles.NODE_PARTICLE.get(), NodeParticle.Factory::new);
 		event.registerSpriteSet(ArcanaParticles.ASPECT_HELIX_PARTICLE.get(), AspectHelixParticle.Factory::new);
 	}
 }
