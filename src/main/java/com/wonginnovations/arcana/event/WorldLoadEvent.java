@@ -14,6 +14,7 @@ import com.wonginnovations.arcana.network.PkSyncResearch;
 import com.wonginnovations.arcana.systems.research.ResearchBooks;
 import com.wonginnovations.arcana.systems.research.ResearchLoader;
 import com.wonginnovations.arcana.capabilities.Researcher;
+import com.wonginnovations.arcana.world.NodeType;
 import com.wonginnovations.arcana.world.WorldInteractionsRegistry;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.client.Minecraft;
@@ -24,6 +25,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -44,6 +46,13 @@ import static com.wonginnovations.arcana.ArcanaVariables.arcLoc;
  */
 @EventBusSubscriber
 public class WorldLoadEvent {
+
+	@SubscribeEvent
+	public static void onClientLoad(ClientPlayerNetworkEvent.LoggingIn event) {
+		for (NodeType nt : NodeType.TYPES.values()) {
+			nt.spawned.clear();
+		}
+	}
 	
 	@SubscribeEvent
 	public static void onWorldLoad(PlayerEvent.PlayerLoggedInEvent event) {

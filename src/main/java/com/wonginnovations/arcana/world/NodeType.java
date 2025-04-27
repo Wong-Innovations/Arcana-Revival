@@ -9,6 +9,7 @@ import com.wonginnovations.arcana.aspects.Aspects;
 import com.wonginnovations.arcana.aspects.ItemAspectRegistry;
 import com.wonginnovations.arcana.aspects.handlers.*;
 import com.wonginnovations.arcana.client.render.particles.ArcanaParticles;
+import com.wonginnovations.arcana.client.render.particles.NodeParticle;
 import com.wonginnovations.arcana.client.render.particles.NodeParticleData;
 import com.wonginnovations.arcana.items.settings.GogglePriority;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -70,13 +71,17 @@ public abstract class NodeType {
 		SPECIAL_TYPES.add(HUNGRY);
 		SPECIAL_TYPES.add(PURE);
 	}
+
+	public final Set<UUID> spawned = new HashSet<>();
 	
 	public void tick(Level level, AuraView nodes, Node node) {
 		// Display the node
 		if (level.isClientSide()) {
 			GogglePriority priority = GogglePriority.getClientGogglePriority();
-			if (priority == GogglePriority.SHOW_NODE || priority == GogglePriority.SHOW_ASPECTS)
+			if (!node.type().spawned.contains(node.nodeUniqueId())) {
+				node.type().spawned.add(node.nodeUniqueId());
 				level.addParticle(new NodeParticleData(node.nodeUniqueId(), node.type().texture(level, nodes, node)), node.getX(), node.getY(), node.getZ(), 0, 0, 0);
+			}
 		}
 		
 		// Regenerate aspects over time

@@ -58,7 +58,7 @@ public class NodeParticle extends TextureSheetParticle {
 		super(level, x, y, z);
 		this.node = node;
 		gravity = 0;
-		lifetime = 0;
+		lifetime = Integer.MAX_VALUE;
 //		particleScale = .7f;
 		scale(1f);
 		hasPhysics = false;
@@ -73,24 +73,27 @@ public class NodeParticle extends TextureSheetParticle {
 
 	@Override
 	public void render(VertexConsumer pBuffer, Camera pRenderInfo, float pPartialTicks) {
-		if (node != null && time > 0 && node.getAspects().countHolders() > 0) {
-			// get current and next aspect
-			//TextureAtlasSprite tex = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(node.type().texture(level, new ClientAuraView(level), node));
-			try {
-				Aspect current = node.getAspects().getHolder(((int)(level.getGameTime() + pPartialTicks) / time) % node.getAspects().countHolders()).getStack().getAspect();
-				Aspect next = node.getAspects().getHolder(((int)(level.getGameTime() + pPartialTicks) / time + 1) % node.getAspects().countHolders()).getStack().getAspect();
-				// get progress between them
-				float progress = (((int)level.getGameTime() + pPartialTicks) / (float)time) % 1;
-				// set color to blended
-				int blended = blend(0xffffff, blend(next.getColorRange().get(3), current.getColorRange().get(3), progress), .3f);
-				rCol = red(blended) / 255f;
-				gCol = green(blended) / 255f;
-				bCol = blue(blended) / 255f;
-			} catch (ArithmeticException arithmeticException) {
-				Arcana.LOGGER.error("{} at: [{}@{}@{}]", arithmeticException, x, y, z);
+		GogglePriority priority = GogglePriority.getClientGogglePriority();
+		if (priority == GogglePriority.SHOW_NODE || priority == GogglePriority.SHOW_ASPECTS) {
+			if (node != null && time > 0 && node.getAspects().countHolders() > 0) {
+				// get current and next aspect
+				//TextureAtlasSprite tex = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(node.type().texture(level, new ClientAuraView(level), node));
+				try {
+					Aspect current = node.getAspects().getHolder(((int)(level.getGameTime() + pPartialTicks) / time) % node.getAspects().countHolders()).getStack().getAspect();
+					Aspect next = node.getAspects().getHolder(((int)(level.getGameTime() + pPartialTicks) / time + 1) % node.getAspects().countHolders()).getStack().getAspect();
+					// get progress between them
+					float progress = (((int)level.getGameTime() + pPartialTicks) / (float)time) % 1;
+					// set color to blended
+					int blended = blend(0xffffff, blend(next.getColorRange().get(3), current.getColorRange().get(3), progress), .3f);
+					rCol = red(blended) / 255f;
+					gCol = green(blended) / 255f;
+					bCol = blue(blended) / 255f;
+				} catch (ArithmeticException arithmeticException) {
+					Arcana.LOGGER.error("{} at: [{}@{}@{}]", arithmeticException, x, y, z);
+				}
 			}
+			super.render(pBuffer, pRenderInfo, pPartialTicks);
 		}
-		super.render(pBuffer, pRenderInfo, pPartialTicks);
 	}
 
 	@Override
