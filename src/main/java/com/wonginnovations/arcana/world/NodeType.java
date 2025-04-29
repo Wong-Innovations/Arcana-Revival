@@ -77,7 +77,6 @@ public abstract class NodeType {
 	public void tick(Level level, AuraView nodes, Node node) {
 		// Display the node
 		if (level.isClientSide()) {
-			GogglePriority priority = GogglePriority.getClientGogglePriority();
 			if (!node.type().spawned.contains(node.nodeUniqueId())) {
 				node.type().spawned.add(node.nodeUniqueId());
 				level.addParticle(new NodeParticleData(node.nodeUniqueId(), node.type().texture(level, nodes, node)), node.getX(), node.getY(), node.getZ(), 0, 0, 0);
@@ -185,7 +184,7 @@ public abstract class NodeType {
 	public static class BrightNodeType extends NodeType {
 		
 		public ResourceLocation texture(Level level, AuraView nodes, Node node) {
-			return arcLoc("particle/nodes/bright_node");
+			return arcLoc("nodes/bright_node");
 		}
 		
 		public Collection<ResourceLocation> textures() {
@@ -216,7 +215,7 @@ public abstract class NodeType {
 	public static class PaleNodeType extends NodeType{
 		
 		public ResourceLocation texture(Level level, AuraView nodes, Node node) {
-			return arcLoc("particle/nodes/fading_node");
+			return arcLoc("nodes/fading_node");
 		}
 		
 		public Collection<ResourceLocation> textures() {
@@ -247,11 +246,11 @@ public abstract class NodeType {
 	public static class EldritchNodeType extends NodeType{
 		
 		public ResourceLocation texture(Level level, AuraView nodes, Node node) {
-			return arcLoc("particle/nodes/eldritch_node");
+			return arcLoc("nodes/eldritch_node");
 		}
 		
 		public Collection<ResourceLocation> textures() {
-			return Collections.singleton(arcLoc("particle/nodes/eldritch_node"));
+			return Collections.singleton(arcLoc("nodes/eldritch_node"));
 		}
 	}
 	
@@ -259,7 +258,7 @@ public abstract class NodeType {
 	public static class HungryNodeType extends NodeType {
 		
 		public ResourceLocation texture(Level level, AuraView nodes, Node node) {
-			return arcLoc("particle/nodes/hungry_node");
+			return arcLoc("nodes/hungry_node");
 		}
 		
 		public Collection<ResourceLocation> textures() {
@@ -331,7 +330,7 @@ public abstract class NodeType {
 	public static class PureNodeType extends NodeType {
 
 		public ResourceLocation texture(Level level, AuraView nodes, Node node) {
-			return arcLoc("particle/nodes/pure_node");
+			return arcLoc("nodes/pure_node");
 		}
 
 		public Collection<ResourceLocation> textures() {
@@ -346,7 +345,7 @@ public abstract class NodeType {
 	public static class TaintedNodeType extends NodeType {
 		
 		public ResourceLocation texture(Level level, AuraView nodes, Node node) {
-			return arcLoc("particle/nodes/tainted_node");
+			return arcLoc("nodes/tainted_node");
 		}
 		
 		public Collection<ResourceLocation> textures() {

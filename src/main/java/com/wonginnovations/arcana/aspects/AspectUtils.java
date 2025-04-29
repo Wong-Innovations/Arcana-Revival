@@ -16,6 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nonnull;
@@ -90,7 +91,11 @@ public class AspectUtils {
 	}
 
 	public static ResourceLocation getAspectTextureLocation(Aspect aspect) {
-		return ArcanaVariables.arcLoc("textures/item/aspect/" + aspect.name().toLowerCase() + ".png");
+		return new ResourceLocation(aspect.toResourceLocation().getNamespace(), "textures/item/aspect/" + aspect.name().toLowerCase() + ".png");
+	}
+
+	public static ResourceLocation getAspectParticleLocation(Aspect aspect) {
+		return new ResourceLocation(aspect.toResourceLocation().getNamespace(), "aspect/" + aspect.name().toLowerCase());
 	}
 
 	public static int getEmptyCell(AspectHandler handler) {

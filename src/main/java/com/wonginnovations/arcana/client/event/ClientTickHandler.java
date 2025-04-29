@@ -159,7 +159,7 @@ public class ClientTickHandler {
 							Vec3 localPos = new Vec3(Mth.sin(angle) * (size / 5f), Mth.cos(angle) * (size / 5f), 0);
 							Vec3 wPos = LocalAxis.toAbsolutePos(localPos, new Vec2(player.getXRot(), player.getYRot()), node.getPosition());
 							// why?
-							level.addParticle(new AspectParticleData(new ResourceLocation(AspectUtils.getAspectTextureLocation(stack.getFirst()).toString().replace("textures/", "").replace(".png", ""))), wPos.x, wPos.y, wPos.z, 0, 0, 0);
+							level.addParticle(new AspectParticleData(AspectUtils.getAspectParticleLocation(stack.getFirst())), wPos.x, wPos.y, wPos.z, 0, 0, 0);
 							// TODO: client reference (UiUtil::tooltipColor)
 							Vec3 numberPos = new Vec3(Mth.sin(angle) * ((size / 5f) - .04), Mth.cos(angle) * ((size / 5f) - .04), -.1);
 							wPos = LocalAxis.toAbsolutePos(numberPos, new Vec2(player.getXRot(), player.getYRot()), node.getPosition());
@@ -246,7 +246,7 @@ public class ClientTickHandler {
 			double srx = (-Math.sin(Math.toRadians(player.getXRot() + centerSpread + 10)));
 			double crx = (Math.cos(Math.toRadians(player.getXRot() + centerSpread + 10)));
 			// Add Aspect Particle
-			level.addParticle(new AspectParticleData(new ResourceLocation(AspectUtils.getAspectTextureLocation(aspectStacks.get(i).getFirst()).toString().replace("textures/", "").replace(".png", ""))),
+			level.addParticle(new AspectParticleData(AspectUtils.getAspectParticleLocation(aspectStacks.get(i).getFirst())),
 					pos.x + 0.5D + (((-srx) / ringReduceSize)), pos.y + 0.8D, pos.z + 0.5D + (((-crx) / ringReduceSize)), 0, 0, 0);
 			float currVis = aspectStacks.get(i).getSecond();
 			// Add Number Particles

@@ -21,14 +21,8 @@ import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -45,25 +39,17 @@ public class NodeParticle extends TextureSheetParticle {
 
 	private Node node;
 	protected static final int time = 40;
-	private final int totalFrames;
-	private static final Map<NodeType, Integer> startFrame = new HashMap<>();
-
-	static {
-		for (NodeType nt : NodeType.TYPES.values()) {
-			startFrame.put(nt, 0);
-		}
-	}
 
 	protected NodeParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite, @Nullable Node node) {
 		super(level, x, y, z);
+		quadSize = 0.1f;
 		this.node = node;
 		gravity = 0;
 		lifetime = Integer.MAX_VALUE;
 //		particleScale = .7f;
-		scale(1f);
+		scale(3f);
 		hasPhysics = false;
 		setSprite(sprite);
-		totalFrames = sprite.contents().getOriginalImage().getHeight() / sprite.contents().height();
 	}
 
 	@Override
@@ -93,6 +79,8 @@ public class NodeParticle extends TextureSheetParticle {
 				}
 			}
 			super.render(pBuffer, pRenderInfo, pPartialTicks);
+		} else {
+
 		}
 	}
 
@@ -102,6 +90,7 @@ public class NodeParticle extends TextureSheetParticle {
 		return 0xf000f0;
 	}
 
+	// TODO: appears behind clouds?
 	public static final ParticleRenderType PASSTHROUGH_TERRAIN_SHEET = new ParticleRenderType() {
 		@Override
 		public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
