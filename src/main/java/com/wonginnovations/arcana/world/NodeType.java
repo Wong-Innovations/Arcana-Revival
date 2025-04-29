@@ -71,14 +71,12 @@ public abstract class NodeType {
 		SPECIAL_TYPES.add(HUNGRY);
 		SPECIAL_TYPES.add(PURE);
 	}
-
-	public final Set<UUID> spawned = new HashSet<>();
 	
 	public void tick(Level level, AuraView nodes, Node node) {
 		// Display the node
 		if (level.isClientSide()) {
-			if (!node.type().spawned.contains(node.nodeUniqueId())) {
-				node.type().spawned.add(node.nodeUniqueId());
+			GogglePriority priority = GogglePriority.getClientGogglePriority();
+			if (priority == GogglePriority.SHOW_NODE || priority == GogglePriority.SHOW_ASPECTS) {
 				level.addParticle(new NodeParticleData(node.nodeUniqueId(), node.type().texture(level, nodes, node)), node.getX(), node.getY(), node.getZ(), 0, 0, 0);
 			}
 		}

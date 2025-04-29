@@ -46,13 +46,6 @@ import static com.wonginnovations.arcana.ArcanaVariables.arcLoc;
  */
 @EventBusSubscriber
 public class WorldLoadEvent {
-
-	@SubscribeEvent
-	public static void onClientLoad(ClientPlayerNetworkEvent.LoggingIn event) {
-		for (NodeType nt : NodeType.TYPES.values()) {
-			nt.spawned.clear();
-		}
-	}
 	
 	@SubscribeEvent
 	public static void onWorldLoad(PlayerEvent.PlayerLoggedInEvent event) {
