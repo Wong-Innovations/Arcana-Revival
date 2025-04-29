@@ -44,16 +44,6 @@ public class TextureStitchHandler {
 //			event.getAtlas().getSprite(AspectBookshelfBlockEntityRenderer.PHIAL_SIDE);
 //			event.getAtlas().getSprite(AspectBookshelfBlockEntityRenderer.PHIAL_BOTTOM);
 //			event.getAtlas().getSprite(AspectBookshelfBlockEntityRenderer.PHIAL_CAP);
-			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_0"));
-			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_1"));
-			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_2"));
-			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_3"));
-			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_4"));
-			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_5"));
-			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_6"));
-			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_7"));
-			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_8"));
-			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_9"));
 			event.getAtlas().getSprite(ArcanaVariables.arcLoc("models/items/thaumonomicon_model"));
 			event.getAtlas().getSprite(AspectValveBlockEntityRenderer.GEAR_TEX);
 
@@ -76,6 +66,17 @@ public class TextureStitchHandler {
 					event.getAtlas().getSprite(rl);
 				}
 			}
+
+			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_0"));
+			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_1"));
+			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_2"));
+			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_3"));
+			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_4"));
+			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_5"));
+			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_6"));
+			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_7"));
+			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_8"));
+			event.getAtlas().getSprite(ArcanaVariables.arcLoc("font/number_9"));
 		}
 	}
 }

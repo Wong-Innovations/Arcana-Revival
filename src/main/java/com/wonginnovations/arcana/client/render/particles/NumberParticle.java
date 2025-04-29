@@ -1,6 +1,7 @@
 package com.wonginnovations.arcana.client.render.particles;
 
 import com.wonginnovations.arcana.Arcana;
+import com.wonginnovations.arcana.mixin.ParticleEngineAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -21,10 +22,11 @@ public class NumberParticle extends TextureSheetParticle {
 	
 	protected NumberParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
 		super(level, x, y, z);
+		quadSize = .1f;
 		gravity = 0;
 		lifetime = 0;
 //		particleScale = .04f;
-		scale(.04f);
+		scale(.4f);
 		hasPhysics = false;
 		setSprite(sprite);
 	}
@@ -44,8 +46,7 @@ public class NumberParticle extends TextureSheetParticle {
 	public static class Factory implements ParticleProvider<NumberParticleData> {
 		public Particle createParticle(NumberParticleData data, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			ResourceLocation countTex = Arcana.arcLoc("font/number_" + data.count);
-			TextureAtlasSprite tas = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(countTex);
-//			TextureAtlasSprite tas = Minecraft.getInstance().getAtlasSpriteGetter(TextureAtlas.LOCATION_BLOCKS).apply(countTex);
+			TextureAtlasSprite tas = ((ParticleEngineAccessor) Minecraft.getInstance().particleEngine).getTextureAtlas().getSprite(countTex);
 			return new NumberParticle(level, x, y, z, tas);
 		}
 	}
