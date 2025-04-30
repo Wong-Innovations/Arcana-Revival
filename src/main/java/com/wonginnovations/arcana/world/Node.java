@@ -23,6 +23,8 @@ public class Node extends Vec3i {
 	int timeUntilRecharge;
 	/** Any extra data, used by the node type (e.g. hungry nodes). */
 	CompoundTag data = new CompoundTag();
+	/** Client only, no serialization needed. */
+	public boolean isEmittingNoise = false;
 	
 	public Node(AspectHandler aspects, NodeType type, int x, int y, int z, int timeUntilRecharge) {
 		super(x, y, z);

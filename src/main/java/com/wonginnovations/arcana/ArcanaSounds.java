@@ -1,5 +1,7 @@
 package com.wonginnovations.arcana;
 
+import com.wonginnovations.arcana.sounds.PositionalSound;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -81,10 +83,8 @@ public class ArcanaSounds {
 		playSound(playerEntity, playerEntity.blockPosition(), ArcanaSounds.spell_cast.get(), SoundSource.PLAYERS,0.4f,1.0f);
 	}
 
-	// TODO: for node ambient sounds is this an okay way to do it?
-	public static void playSoundOnce(Player playerEntity, BlockPos pos, SoundEvent evt, SoundSource source, float v, float p) {
-		if (new Random().nextInt(400) == 0)
-			playSound(playerEntity, pos, evt, source, v, p);
+	public static void playSoundOnce(Player playerEntity, BlockPos pos, SoundEvent evt, SoundSource source, float v, float p, float distance, Runnable onStop) {
+		Minecraft.getInstance().getSoundManager().play(new PositionalSound(pos, playerEntity, evt, source, v, p, distance, onStop));
 	}
 
 	public static void playSound(Player playerEntity, BlockPos pos, SoundEvent evt, SoundSource source, float v, float p) {

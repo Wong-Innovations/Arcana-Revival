@@ -132,13 +132,16 @@ public class ClientTickHandler {
 				// Play node sounds
 				if (!nodes.isEmpty()) {
 					for (Node node : nodes) {
+						if (node.isEmittingNoise)
+							continue;
+						node.isEmittingNoise = true;
 						NodeType type = node.type();
 						if (type == NodeType.HUNGRY)
-							ArcanaSounds.playSoundOnce(player, new BlockPos(node), ArcanaSounds.arcana_hunger_node.get(), SoundSource.AMBIENT, 0.4f, 1.0f);
+							ArcanaSounds.playSoundOnce(player, new BlockPos(node), ArcanaSounds.arcana_hunger_node.get(), SoundSource.AMBIENT, 1f, 1f, 16f, () -> node.isEmittingNoise = false);
 						else if (type == NodeType.NORMAL || type == NodeType.BRIGHT || type == NodeType.PURE || type == NodeType.PALE)
-							ArcanaSounds.playSoundOnce(player, new BlockPos(node), ArcanaSounds.arcananodes.get(), SoundSource.AMBIENT, 0.4f, 1.0f);
+							ArcanaSounds.playSoundOnce(player, new BlockPos(node), ArcanaSounds.arcananodes.get(), SoundSource.AMBIENT, 1f, 1f, 16f, () -> node.isEmittingNoise = false);
 						else
-							ArcanaSounds.playSoundOnce(player, new BlockPos(node), ArcanaSounds.arcananodesnegative.get(), SoundSource.AMBIENT, 0.4f, 1.0f);
+							ArcanaSounds.playSoundOnce(player, new BlockPos(node), ArcanaSounds.arcananodesnegative.get(), SoundSource.AMBIENT, 1f, 1f, 16f, () -> node.isEmittingNoise = false);
 					}
 				}
 
