@@ -133,7 +133,7 @@ public class PhialItem extends Item implements IOverrideAspects {
 				float amount = vis.getHolder(0).getStack().getAmount();
 				if (aspect != null && amount != 0) {
 					CompoundTag compoundNBT = new CompoundTag();
-					compoundNBT.putInt("id", aspect.getId() - 1);
+					compoundNBT.putInt("aspect", aspect.getId() - 2);
 					compoundNBT.putFloat("amount", amount);
 					return compoundNBT;
 				}
@@ -147,7 +147,7 @@ public class PhialItem extends Item implements IOverrideAspects {
 		if (nbt != null) {
 			AspectHandler cap = AspectHandler.getFrom(stack);
 			if (cap != null)
-				cap.getHolder(0).insert(new AspectStack(Aspects.getAll().get(nbt.getInt("id") - 1), nbt.getInt("amount")), false);
+				cap.getHolder(0).insert(new AspectStack(Aspects.getAll().get(nbt.getInt("aspect") + 2), nbt.getInt("amount")), false);
 		}
 	}
 

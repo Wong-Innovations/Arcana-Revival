@@ -41,8 +41,7 @@ public class ItemModelGenerator extends ItemModelProvider {
 		
 		Aspects.getWithoutEmpty().forEach(aspect -> {
 			withExistingParent("aspect_" + aspect.name().toLowerCase(), "item/generated")
-					.texture("layer0", new ResourceLocation(Arcana.MODID, "item/aspect/" + aspect.name().toLowerCase()))
-					.texture("particle", new ResourceLocation(Arcana.MODID, "item/aspect/" + aspect.name().toLowerCase()));
+					.texture("layer0", new ResourceLocation(Arcana.MODID, "item/aspect/" + aspect.name().toLowerCase()));
 			//withExistingParent("phial_" + aspect.name().toLowerCase(), "item/generated")
 			//		.texture("layer0", new ResourceLocation(Arcana.MODID, "item/phial_" + aspect.name().toLowerCase()));
 			withExistingParent(aspect.name().toLowerCase() + "_crystal", "item/generated")
