@@ -18,8 +18,9 @@ public class CrystalItem extends Item {
         super(properties);
         this.aspect = aspect;
     }
-    
-    public Component getDisplayName(ItemStack stack) {
+
+    @Override
+    public Component getName(ItemStack stack) {
         return Component.translatable("item.arcana.crystal", Component.translatable("aspect." + aspect.name()));
     }
 }
