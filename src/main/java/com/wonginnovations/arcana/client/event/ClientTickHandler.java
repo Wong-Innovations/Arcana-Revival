@@ -40,6 +40,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -158,7 +159,6 @@ public class ClientTickHandler {
 							// TODO: ease in/out (multiply by some fraction)
 							Vec3 localPos = new Vec3(Mth.sin(angle) * (size / 5f), Mth.cos(angle) * (size / 5f), 0);
 							Vec3 wPos = LocalAxis.toAbsolutePos(localPos, new Vec2(player.getXRot(), player.getYRot()), node.getPosition());
-							// why?
 							level.addParticle(new AspectParticleData(AspectUtils.getAspectParticleLocation(stack.getFirst())), wPos.x, wPos.y, wPos.z, 0, 0, 0);
 							// TODO: client reference (UiUtil::tooltipColor)
 							Vec3 numberPos = new Vec3(Mth.sin(angle) * ((size / 5f) - .04), Mth.cos(angle) * ((size / 5f) - .04), -.1);
@@ -200,7 +200,8 @@ public class ClientTickHandler {
 										stacks.add(vis.getHolder(i).getStack());
 								// Squish aspect stacks in to reducedStacks
 								List<AspectStack> reducedStacks = AspectUtils.squish(stacks);
-								renderAspectAndNumberParticlesInCircle(level, new Vec3(pos.getX(), pos.getY(), pos.getZ()), player, reducedStacks.stream().map(stack -> Pair.of(stack.getAspect(), stack.getAmount())).collect(Collectors.toList()),2);
+								Collections.reverse(stacks);
+								renderAspectAndNumberParticlesInCircle(level, new Vec3(pos.getX(), pos.getY(), pos.getZ()), player, stacks.stream().map(stack -> Pair.of(stack.getAspect(), stack.getAmount())).collect(Collectors.toList()),2);
 							}
 						}
 					}
@@ -243,15 +244,15 @@ public class ClientTickHandler {
 		for (int i = 0; i < aspectStacks.size(); i++) {
 			double centerSpread = v[i];
 			// track player head rotation
-			double srx = (-Math.sin(Math.toRadians(player.getXRot() + centerSpread + 10)));
-			double crx = (Math.cos(Math.toRadians(player.getXRot() + centerSpread + 10)));
+			double srx = (-Math.sin(Math.toRadians(player.getYRot() + centerSpread + 10)));
+			double crx = (Math.cos(Math.toRadians(player.getYRot() + centerSpread + 10)));
 			// Add Aspect Particle
 			level.addParticle(new AspectParticleData(AspectUtils.getAspectParticleLocation(aspectStacks.get(i).getFirst())),
 					pos.x + 0.5D + (((-srx) / ringReduceSize)), pos.y + 0.8D, pos.z + 0.5D + (((-crx) / ringReduceSize)), 0, 0, 0);
 			float currVis = aspectStacks.get(i).getSecond();
 			// Add Number Particles
 			// If you change Y, particle is no more good aligned with particle
-			renderNumberParticles(pos.x + 0.5D + ((-srx * 1.01) / ringReduceSize), pos.y + 0.8D, pos.z + 0.5D + ((-crx * 1.01) / ringReduceSize), player.getXRot(), currVis, level);
+			renderNumberParticles(pos.x + 0.5D + ((-srx * 1.01) / ringReduceSize), pos.y + 0.8D, pos.z + 0.5D + ((-crx * 1.01) / ringReduceSize), player.getYRot(), currVis, level);
 		}
 	}
 

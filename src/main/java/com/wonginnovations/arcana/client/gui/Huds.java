@@ -110,22 +110,22 @@ public final class Huds {
 			BlockPos targeted = player.level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player)).getBlockPos();
 			BlockEntity te = player.level().getBlockEntity(targeted);
 			if (te instanceof CrucibleBlockEntity) {
-				CrucibleBlockEntity crucible = (CrucibleBlockEntity)te;
-				GogglePriority priority = GogglePriority.getClientGogglePriority();
-				if (priority == GogglePriority.SHOW_NODE || priority == GogglePriority.SHOW_ASPECTS) {
-					List<AspectStack> stacks = new ArrayList<>(crucible.getAspectStackMap().values());
-					int size = 20;
-					int baseX = (event.getWindow().getGuiScaledWidth() - stacks.size() * size) / 2;
-					int baseY = (event.getWindow().getGuiScaledHeight() - size) / 2 - (ArcanaConfig.BLOCK_HUDS_TOP.get() ? 10 : -10);
-					for (int i = 0, stacksSize = stacks.size(); i < stacksSize; i++) {
-						AspectStack aspStack = stacks.get(i);
-						int x = baseX + i * size;
-						int y = baseY - 10;
-						if (i % 2 == 0)
-							y += 8;
-						ClientUiUtil.renderAspectStack(guiGraphics, aspStack, x, y);
-					}
-				}
+//				CrucibleBlockEntity crucible = (CrucibleBlockEntity)te;
+//				GogglePriority priority = GogglePriority.getClientGogglePriority();
+//				if (priority == GogglePriority.SHOW_NODE || priority == GogglePriority.SHOW_ASPECTS) {
+//					List<AspectStack> stacks = new ArrayList<>(crucible.getAspectStackMap().values());
+//					int size = 20;
+//					int baseX = (event.getWindow().getGuiScaledWidth() - stacks.size() * size) / 2;
+//					int baseY = (event.getWindow().getGuiScaledHeight() - size) / 2 - (ArcanaConfig.BLOCK_HUDS_TOP.get() ? 10 : -10);
+//					for (int i = 0, stacksSize = stacks.size(); i < stacksSize; i++) {
+//						AspectStack aspStack = stacks.get(i);
+//						int x = baseX + i * size;
+//						int y = baseY - 10;
+//						if (i % 2 == 0)
+//							y += 8;
+//						ClientUiUtil.renderAspectStack(guiGraphics, aspStack, x, y);
+//					}
+//				}
 			}
 			if (te instanceof AlembicBlockEntity alembic) {
                 GogglePriority priority = GogglePriority.getClientGogglePriority();

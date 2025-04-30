@@ -22,11 +22,11 @@ public class NumberParticle extends TextureSheetParticle {
 	
 	protected NumberParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
 		super(level, x, y, z);
-		quadSize = .1f;
+		quadSize = .04f;
 		gravity = 0;
 		lifetime = 0;
 //		particleScale = .04f;
-		scale(.4f);
+		scale(1f);
 		hasPhysics = false;
 		setSprite(sprite);
 	}

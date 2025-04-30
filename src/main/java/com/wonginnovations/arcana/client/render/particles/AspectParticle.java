@@ -21,7 +21,7 @@ public class AspectParticle extends TextureSheetParticle {
 	
 	protected AspectParticle(ClientLevel level, double x, double y, double z, TextureAtlasSprite sprite) {
 		super(level, x, y, z);
-		quadSize = 0.1f;
+		quadSize = 0.14f;
 		gravity = 0;
 		lifetime = 0;
 //		particleScale = .14f;
